@@ -6,5 +6,5 @@
 有点简陋，有空优化一下，加点适配
 
 # Attributes:
-+ :select-data (Array)
++ :select-data: (Array)
 + @getData: (Function)
