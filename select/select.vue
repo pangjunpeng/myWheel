@@ -5,7 +5,7 @@
       <div
         class="show"
         @click="show=!show">
-        <img :src="'../../static/' + selectData[menueIndex].branchId + '.png'">
+        <img :src="selectData[menueIndex].logo">
         {{ selectData[menueIndex].bankName }}
       </div>
       <div
@@ -16,7 +16,7 @@
             v-for="(item, index) in selectData"
             :key="index"
             @click="selectMenu(index)">
-            <img :src="'../../static/' + item.branchId + '.png'">
+            <img :src="item.logo">
             {{ item.bankName }}
           </li>
         </ul>
@@ -69,7 +69,7 @@
       cursor: default;
       position: relative;
       padding-right: 10px;
-      background: url("../assets/img/arrow.png") no-repeat;
+      background: url("img/arrow.png") no-repeat;
       background-size: 15px;
       background-position: right 6px;
     }
