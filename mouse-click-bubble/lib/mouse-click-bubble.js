@@ -58,7 +58,8 @@ class DoSpan{
 				fontSize: '16px',
 				lineHeight: '20px',
 				color: this.color,
-				opacity: 1
+				opacity: 1,
+				zIndex: 999999999
 			}
 
 		this.setSpan(this.INIT_STATUS)

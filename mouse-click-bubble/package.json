@@ -1,6 +1,6 @@
 {
   "name": "mouse-click-bubble",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "a plugin which can bubble the word when you click for javascript",
   "main": "index.js",
   "scripts": {
