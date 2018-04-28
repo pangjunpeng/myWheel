@@ -1,0 +1,23 @@
+{
+  "name": "mouse-click-bubble",
+  "version": "1.0.3",
+  "description": "a plugin which can bubble the word when you click for javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pangjunpeng/myWheel/tree/master/mouse-click-bubble"
+  },
+  "keywords": [
+    "javascript",
+    "mouse",
+    "click",
+    "bubble",
+    "js",
+    "plugin"
+  ],
+  "author": "pangjunpeng",
+  "license": "ISC"
+}

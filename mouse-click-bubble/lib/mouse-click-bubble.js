@@ -44,7 +44,7 @@ class DoSpan{
 	}
 	createSpan(e){
 		this.span = document.createElement('span')
-		if((typeof params.value) === 'string' || (typeof params.value) === 'number'){
+		if((typeof this.value) === 'string' || (typeof this.value) === 'number'){
 			this.span.innerText = this.value
 		}else{
 			this.span.innerText = this.value[this.valueCount % this.value.length]
@@ -89,3 +89,4 @@ class DoSpan{
 		}, 10)
 	}
 }
+module.exports = MouseBubble

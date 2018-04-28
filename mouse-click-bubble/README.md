@@ -1,8 +1,14 @@
 
 逛博客的时候发现别人站里这个效果不错，便自己写了一个。  
-正好总结巩固js面向对象知识了  
+正好总结巩固js面向对象知识了  
 
-很简单，引入js文件，new MouseBubble()便可以啦
+## 引入方式
+1. `<script src="./mouse-click-bubble.js"></script>`  
+
+2. + `npm install mouse-click-buble --save`
+    + 之后`require('mouse-click-bubble')`
+
+引入之后  
 
 ```javascript
 new MouseBubble()
