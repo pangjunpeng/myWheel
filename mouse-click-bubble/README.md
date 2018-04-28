@@ -6,7 +6,7 @@
 1. `<script src="./mouse-click-bubble.js"></script>`  
 
 2. + `npm install mouse-click-buble --save`
-    + 之后`require('mouse-click-bubble')`
+    + 之后`const MouseBubble = require('mouse-click-bubble')`
 
 引入之后  
 
