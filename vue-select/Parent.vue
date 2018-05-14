@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-  import Select from '../select/Select.vue'
+  import Select from './Select.vue'
   export default{
     name: 'Parent',
     components: {

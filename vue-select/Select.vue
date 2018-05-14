@@ -5,7 +5,7 @@
       <div
         class="show"
         @click="show=!show">
-        <img :src="selectData[menueIndex].logo">
+        <img :src="selectData[menueIndex].logo" class="logo">
         {{ selectData[menueIndex].bankName }}
       </div>
       <div
@@ -16,7 +16,7 @@
             v-for="(item, index) in selectData"
             :key="index"
             @click="selectMenu(index)">
-            <img :src="item.logo">
+            <img :src="item.logo" class="logo">
             {{ item.bankName }}
           </li>
         </ul>
@@ -72,6 +72,10 @@
       background: url("img/arrow.png") no-repeat;
       background-size: 15px;
       background-position: right 6px;
+      .logo{
+        height: 100%;
+        vertical-align: top;
+      }
     }
     .showList {
       position: absolute;
@@ -83,10 +87,13 @@
         height: 30px;
         line-height: 30px;
         cursor: default;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #eee;
+        .logo {
+          height: 100%;
+          vertical-align: top;
+        }
         &:hover {
-          background-color: #333;
-          color: #fff;
+          background-color: #f5f5f5;
         }
         &:last-child {
           border-bottom: 0;
