@@ -90,7 +90,7 @@
       background-image: url("img/arrow.png");
       background-repeat: no-repeat;
       background-size: 15px;
-      background-position: right 12px;
+      background-position: right center;
       .logo{
         height: 100%;
         vertical-align: top;
