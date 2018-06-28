@@ -12,10 +12,12 @@ export default function scrollTrigger (params, fn) {
     el.preDisY = +translate[2]
   }
   el.ontouchstart = function (e) {
+    e.preventDefault()
     scrollX && (this.startX = e.changedTouches[0].clientX)
     scrollY && (this.startY = e.changedTouches[0].clientY)
   }
   el.ontouchmove = function (e) {
+    e.preventDefault()
     if (scrollX) {
       this.currentClientX = e.changedTouches[0].clientX
       this.disX = this.currentClientX - this.startX + this.preDisX
@@ -27,6 +29,7 @@ export default function scrollTrigger (params, fn) {
     target.style.transform = `translate(${this.disX}px, ${this.disY}px)`
   }
   el.ontouchend = function (e) {
+    e.preventDefault()
     scrollX && (this.preDisX = this.disX)
     scrollY && (this.preDisY = this.disY)
     if (fn) {
