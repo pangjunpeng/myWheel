@@ -182,7 +182,11 @@
       this.mouse = new MouseBubble()
     },
     mounted(){
-      this.toast('快速点击左下角5次可调出vconsole哦~')
+      if(navigator.userAgent.match('Mobile')){
+        this.toast('快速点击左下角5次可调出vconsole哦~')
+      }else{
+        this.toast('手机访问效果更佳哦~')
+      }
     }
   }
 </script>
@@ -195,6 +199,8 @@
   }
   .container{
     padding: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
   }
   .item{
     display: flex;

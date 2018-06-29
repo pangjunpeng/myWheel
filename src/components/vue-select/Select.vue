@@ -53,7 +53,7 @@
       }
     },
     created(){
-      this.deviceType = (window.navigator.userAgent.indexOf('Mobile') < 0) ? 'pc' : 'mobile'
+      this.deviceType = 'mobile'
       this.$emit('selectInfo', this.selectData[0])
     },
     methods: {
@@ -87,6 +87,7 @@
       line-height: 20px;
       cursor: default;
       position: relative;
+      z-index: 2;
       padding: 5px 15px;
       background-color: #fff;
       background-image: url("img/arrow.png");
@@ -102,7 +103,7 @@
       position: absolute;
       top: 40px;
       left: 0;
-      z-index: -1;
+      z-index: 1;
       width: 100%;
       border: 1px solid #ccc;
       background-color: #fff;
