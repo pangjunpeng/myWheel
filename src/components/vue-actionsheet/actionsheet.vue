@@ -66,6 +66,7 @@
     background-color: #fff;
   }
   .border-radius{
+    overflow: hidden;
     border-radius: 5px;
   }
 

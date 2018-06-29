@@ -71,6 +71,7 @@
 <style scoped lang="less" type="text/less">
   .select-container {
     display: flex;
+    padding: 0 10px;
     border: 1px solid #ccc;
   }
   .payway {
@@ -78,7 +79,7 @@
     align-self: center;
   }
   .downmenu {
-    flex: 5;
+    flex: 4;
     border: none;
     position: relative;
     .show {

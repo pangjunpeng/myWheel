@@ -178,7 +178,6 @@
       this.actionsheetImg = require('../assets/img/actionSheet.png')
       this.mbSelectImg = require('../assets/img/select.png')
   
-      document.getElementsByTagName('html')[0].style.fontSize = document.documentElement.clientWidth / 10 + 'px'
       this.mouse = new MouseBubble()
     },
     mounted(){
