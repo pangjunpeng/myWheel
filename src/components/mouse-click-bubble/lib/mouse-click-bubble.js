@@ -25,14 +25,18 @@ class MouseBubble{
 		  return
 		}
 		this.params = options
-		this.init()
+		this.add()
 	}
-	init(){
+	add(){
 		this.params.valueCount = 0
-		document.addEventListener('click',(e)=>{
-			new DoSpan(this.params, e)
-			this.params.valueCount++
-		})
+    let doClick = (e) => {
+      new DoSpan(this.params, e)
+      this.params.valueCount++
+    }
+		document.addEventListener('click', doClick)
+    this.remove = function(){
+      document.removeEventListener('click', doClick)
+    }
 	}
 
 }
@@ -85,9 +89,9 @@ class DoSpan{
 			if(count >= Number(this.distance)){
 				clearInterval(this.span.timer)
 				document.body.removeChild(this.span)
-				delete this
+				// delete this
 			}
 		}, 10)
 	}
 }
-module.exports = MouseBubble
+export default MouseBubble

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="select-container">
     <div class="payway">收款方式：</div>
     <div class="downmenu">
       <div
@@ -54,6 +54,7 @@
     },
     created(){
       this.deviceType = (window.navigator.userAgent.indexOf('Mobile') < 0) ? 'pc' : 'mobile'
+      this.$emit('selectInfo', this.selectData[0])
     },
     methods: {
       selectMenu(index) {
@@ -68,7 +69,7 @@
   }
 </script>
 <style scoped lang="less" type="text/less">
-  .container {
+  .select-container {
     display: flex;
     border: 1px solid #ccc;
   }
@@ -82,7 +83,7 @@
     position: relative;
     .show {
       height: 30px;
-      line-height: 30px;
+      line-height: 20px;
       cursor: default;
       position: relative;
       padding: 5px 15px;
@@ -130,6 +131,7 @@
       left: 0;
       right: 0;
       bottom: 0;
+      z-index: 999;
       background: rgba(0,0,0,.5);
       ul{
         position: absolute;
@@ -147,6 +149,7 @@
           border-bottom: 1px solid #eee;
           cursor: default;
           .logo {
+            margin-right: 10px;
             height: 100%;
             vertical-align: top;
           }

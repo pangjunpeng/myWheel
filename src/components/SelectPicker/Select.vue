@@ -60,8 +60,8 @@
         el: this.$refs.slideEl,
         target: this.$refs.slidePart,
       }, function(itemIndex){
-        console.log(itemIndex)
         self.res = self.lists[itemIndex]
+        self.$emit('result', self.res)
       })
       sPicker.scrollTrigger({
         scrollX: false,
@@ -81,6 +81,7 @@
     height: 200px;
     background-color: #fff;
     position: fixed;
+    left: 0;
     bottom: 0;
     z-index: 999;
     .select-header{

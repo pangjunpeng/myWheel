@@ -15,7 +15,7 @@
       </div>
     </transition>
     <transition name="popup-mask">
-      <div class="popup-bg" v-show="isShow"></div>
+      <div class="popup-bg" v-show="isShow" @click.stop="closePopup"></div>
     </transition>
   </div>
 </template>
