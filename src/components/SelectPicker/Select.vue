@@ -28,21 +28,16 @@
       isShow: {
         type: Boolean,
         default: true
+      },
+      lists: {
+        type: Array,
+        default(){
+          return []
+        }
       }
     },
     data(){
       return {
-        lists: [
-          {id: 0, value: "item0", text: "选项1"},
-          {id: 1, value: "item1", text: "选项2"},
-          {id: 2, value: "item2", text: "选项3"},
-          {id: 3, value: "item3", text: "选项4"},
-          {id: 4, value: "item4", text: "选项5"},
-          {id: 5, value: "item5", text: "选项6"},
-          {id: 6, value: "item6", text: "选项7"},
-          {id: 7, value: "item7", text: "选项8"},
-          {id: 8, value: "item8", text: "选项9"},
-          {id: 9, value: "item9", text: "选项10"}],
         sRes: {}
       }
     },
@@ -131,7 +126,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(#ccc, transparent, transparent, #ccc);
+        background: linear-gradient(#ccc, transparent, #ccc);
         &::before, &::after{
           content: '';
           display: block;
