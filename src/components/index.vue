@@ -143,6 +143,7 @@
         this.isShowAct = !this.isShowAct
       },
       switchMbSelect(){
+        this.isShowSelect = false
         this.result = this.s2Data
         if(!this.isShowMbSelect && this.resFlag){
           this.resFlag = true
