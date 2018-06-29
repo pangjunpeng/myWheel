@@ -1,5 +1,12 @@
 待写，回家
 
+使用
+<my-select :isShow.sync="selectShow" @result="getRes"></my-select>
+
++ selectShow: 显隐标识
++ getRes: 选中的数据
+
+
 import triggerScroll from './triggerScroll'
 
 scrollTrigger({

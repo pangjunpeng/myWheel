@@ -7,10 +7,12 @@
  * @param parmas
  * @constructor
  */
-function SelectPicker (params) {
+function SelectPicker (params, fn) {
   this.el = params.el
   this.target = params.target
   this.init()
+  this.scrollTo('top')
+  fn && fn(this.itemIndex)
 }
 SelectPicker.prototype = {
   init: function(){
@@ -19,8 +21,6 @@ SelectPicker.prototype = {
     this.tItemHeight = this.getAttr(this.target.firstChild, 'height')
     this.initTop = (this.elHeight - this.tItemHeight) / 2
     this.initBottom = -this.targetHeight + (this.elHeight + this.tItemHeight) / 2
-    console.log(this.elHeight, this.elHeight, this.tItemHeight)
-    console.log(this.initBottom)
   },
   scrollTrigger: function (params={}, fn) {
     let self = this   // 保存this
@@ -58,20 +58,28 @@ SelectPicker.prototype = {
         if(this.disY > self.initTop){
           this.disY = self.initTop
         }
-        console.log(this.disY, self.initBottom)
         if(this.disY < self.initBottom){
           this.disY = self.initBottom
         }
+        self.itemIndex = Math.round((self.initTop - this.disY) / self.tItemHeight)
+        self.target.childNodes.forEach(function(item){
+          item.style.fontWeight = ''
+        })
+        self.target.childNodes[self.itemIndex].style.fontWeight = 800
       }
       self.target.style.transform = `translate(${this.disX}px, ${this.disY}px)`
     }
     self.el.ontouchend = function (e) {
       e.preventDefault()
-      scrollX && (this.preDisX = this.disX)
-      scrollY && (this.preDisY = this.disY)
       var res = {}
-      scrollX && (res.translateX = this.disX)
-      scrollY && (res.translateY = this.disY)
+      if(scrollX){
+        res.translateX = this.preDisX = this.disX
+      }
+      if(scrollY) {
+        res.translateY = this.preDisY = this.disY
+        res.itemIndex = self.itemIndex
+        self.scrollTo(self.initTop - self.itemIndex * self.tItemHeight)
+      }
       !scrollX && !scrollY && (res = '无法移动，请开启参数')
       if (fn) {
         fn(res)
@@ -96,8 +104,8 @@ SelectPicker.prototype = {
         top = self.initTop
       }
     }
-    self.initLeft = left
-    self.initTop = top
+    self.itemIndex = Math.round((self.initTop - top) / self.tItemHeight)
+    self.target.childNodes[self.itemIndex].style.fontWeight = 800
     self.target.style.transform = `translate(${left}px, ${top}px)`
   },
   getStyle: function(obj, attr){
