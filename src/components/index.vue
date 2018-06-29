@@ -23,8 +23,9 @@
         :select-data="selectData"
         @selectInfo="getSelectInfo"
         v-show="isShowSelect"></v-select>
-      <actionsheet :opts="popupData" :isShow.sync="isShowAct"></actionsheet>
+      <actionsheet :opts="popupData" :isShow.sync="isShowAct" @handler="handlerAct"></actionsheet>
       <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes"></my-select>
+      <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
       <p v-show="resFlag" class="mt">获取到数据为 {{result}}</p>
     </div>
   </div>
@@ -35,12 +36,14 @@
   import VConsole from './my_vConsole/lib/vconsole.min'
   import Actionsheet from './vue-actionsheet/actionsheet'
   import mySelect from './SelectPicker/Select'
+  import toast from './toast/toast'
   export default{
     name: 'index',
     components: {
       vSelect: Select,
       Actionsheet,
       mySelect,
+      toast
     },
     data(){
       return {
@@ -51,11 +54,13 @@
         isShowSelect: false,
         isShowAct: false,
         isShowMbSelect: false,
+        isShowToast: false,
         s1Data: {},
         s2Data: {},
         selectImg: '',
         actionsheetImg: '',
         mbSelectImg: '',
+        tipsMsg: '',
         bankLists: [
           {
           'branchId'  : '48484848448',
@@ -86,17 +91,13 @@
           text      : '行内转账',
           cssClasses: 'content',
           handler   : function () {
-            // todo toast
-//            this.result = '选择了行内转账'
-//            this.resFlag = true
+            this.toast('您选择了行内转账~')
           }
         }, {
           text      : '跨行转账',
           cssClasses: 'content',
           handler   : function () {
-            // todo toast
-//            this.result = '选择了跨行转账'
-//            this.resFlag = true
+            this.toast('您选择了跨行转账~')
           }
         }],
         lists: [
@@ -163,6 +164,13 @@
       getSelectInfo(data){
         this.s1Data = data
         this.result = this.s1Data
+      },
+      handlerAct(data){
+        data.call(this)
+      },
+      toast(msg){
+        this.isShowToast = true
+        this.tipsMsg = msg.toString()
       }
     },
     created(){
@@ -172,6 +180,9 @@
   
       document.getElementsByTagName('html')[0].style.fontSize = document.documentElement.clientWidth / 10 + 'px'
       this.mouse = new MouseBubble()
+    },
+    mounted(){
+      this.toast('快速点击左下角5次可调出vconsole哦~')
     }
   }
 </script>

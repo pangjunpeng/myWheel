@@ -41,10 +41,10 @@
     },
     methods: {
       itemClick(handler){
-        if(handler && typeof handler === 'function'){
-          handler()
-        }
         this.closePopup()
+        if(handler && typeof handler === 'function'){
+          this.$emit('handler', handler)
+        }
       },
       closePopup(){
         this.$emit('update:isShow', !this.isShow)
