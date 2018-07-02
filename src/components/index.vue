@@ -1,21 +1,25 @@
 <template>
   <div class="container">
     <div class="list clearfix">
-      <div class="item switch">
-        <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
-        <p>冒泡泡</p>
-      </div>
-      <div class="item img" @click="switchSelect">
-        <img :src="selectImg" alt="带图select">
-        <p>带图片的select</p>
+      <div class="item img" @click="switchMbSelect">
+        <img :src="mbSelectImg" alt="手机select">
+        <p>仿手机原生select</p>
       </div>
       <div class="item img" @click="switchAct">
         <img :src="actionsheetImg" alt="actionsheet提示">
         <p>actionsheet</p>
       </div>
-      <div class="item img" @click="switchMbSelect">
-        <img :src="mbSelectImg" alt="手机select">
-        <p>仿手机原生select</p>
+      <div class="item img" @click="switchSelect">
+        <img :src="selectImg" alt="带图select">
+        <p>带图片的select</p>
+      </div>
+      <div class="item img" @click="switchSelect">
+        <img :src="msgImg" alt="消息提示">
+        <p>消息提示</p>
+      </div>
+      <div class="item switch">
+        <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
+        <p>冒泡泡</p>
       </div>
     </div>
     <div class="main mt">
@@ -26,6 +30,7 @@
       <actionsheet :opts="popupData" :isShow.sync="isShowAct" @handler="handlerAct"></actionsheet>
       <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes"></my-select>
       <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
+      <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
       <p v-show="resFlag" class="mt">获取到数据为 {{result}}</p>
     </div>
   </div>
@@ -37,13 +42,15 @@
   import Actionsheet from './vue-actionsheet/actionsheet'
   import mySelect from './SelectPicker/Select'
   import toast from './toast/toast'
+  import msgBox from './msgBox/msgBox'
   export default{
     name: 'index',
     components: {
       vSelect: Select,
       Actionsheet,
       mySelect,
-      toast
+      toast,
+      msgBox
     },
     data(){
       return {
@@ -58,9 +65,13 @@
         s1Data: {},
         s2Data: {},
         selectImg: '',
+        msgImg: '',
         actionsheetImg: '',
         mbSelectImg: '',
         tipsMsg: '',
+        msgType: '',
+        alertShow: false,
+        msg: '说点什么呢',
         bankLists: [
           {
           'branchId'  : '48484848448',
@@ -172,12 +183,30 @@
       toast(msg){
         this.isShowToast = true
         this.tipsMsg = msg.toString()
+      },
+      alert(msg){
+        this.msgType = 'alert'
+        this.msg = msg
+        this.alertShow = true
+      },
+      prompt(){
+        this.msgType = 'prompt'
+        this.alertShow = true
+      },
+      confirm(msg){
+        this.msgType = 'confirm'
+        this.msg = msg
+        this.alertShow = true
+      },
+      getMsg(data){
+        console.log(data)
       }
     },
     created(){
       this.selectImg = require('../assets/img/popup.png')
       this.actionsheetImg = require('../assets/img/actionSheet.png')
       this.mbSelectImg = require('../assets/img/select.png')
+      this.msgImg = require('../assets/img/msg.png')
   
       this.mouse = new MouseBubble()
     },
@@ -187,6 +216,7 @@
       }else{
         this.toast('手机访问效果更佳哦~')
       }
+      console.log('欢迎欢迎~')
     }
   }
 </script>
