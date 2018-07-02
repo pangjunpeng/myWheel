@@ -71,7 +71,7 @@
   }
 
   .popup-wrapper {
-    position: absolute;
+    position: fixed;
     bottom: 5px;
     left: 2%;
     right: 2%;

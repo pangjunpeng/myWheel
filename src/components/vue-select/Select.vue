@@ -1,28 +1,33 @@
 <template>
-  <div class="select-container">
-    <div class="payway">收款方式：</div>
-    <div class="downmenu">
-      <div
-        class="show"
-        @click="show=!show">
-        <img :src="selectData[menueIndex].logo" class="logo">
-        {{ selectData[menueIndex].bankName }}
-      </div>
-      <transition :name="listFade">
-        <div
-          v-show="show"
-          :class="showList" @click="hideBg">
-          <ul>
-            <li
-              v-for="(item, index) in selectData"
-              :key="index"
-              @click.prevent="selectMenu(index)">
-              <img :src="item.logo" class="logo">
-              {{ item.bankName }}
-            </li>
-          </ul>
+  <div class="select-wrapper" ref="header">
+    <div ref="mask" class="mask">
+      <div class="select-container">
+        <div class="payway">收款方式：</div>
+        <div class="downmenu">
+          <div
+            class="show"
+            @click="show=!show">
+            <img :src="selectData[menueIndex].logo" class="logo">
+            {{ selectData[menueIndex].bankName }}
+          </div>
+          <transition :name="listFade" @enter="enter" @after-leave="afterLeave">
+            <div
+              v-show="show"
+              :class="showList" @click="hideBg" ref="main">
+              <ul>
+                <li
+                  v-for="(item, index) in selectData"
+                  :key="index"
+                  @click.prevent="selectMenu(index)">
+                  <img :src="item.logo" class="logo">
+                  {{ item.bankName }}
+                </li>
+              </ul>
+            </div>
+          </transition>
         </div>
-      </transition>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -41,7 +46,7 @@
       return {
         menueIndex: 0,
         show: false,
-        deviceType: ''
+        deviceType: '',
       }
     },
     computed: {
@@ -50,10 +55,13 @@
       },
       listFade(){
         return (this.deviceType === 'pc') ? 'pc-fade' : 'mb-fade'
+      },
+      isPc(){
+        return this.deviceType === 'pc'
       }
     },
     created(){
-      this.deviceType = 'mobile'
+      this.deviceType = (window.navigator.userAgent.indexOf('Mobile') < 0) ? 'pc' : 'mobile'
       this.$emit('selectInfo', this.selectData[0])
     },
     methods: {
@@ -64,14 +72,48 @@
       },
       hideBg(){
         this.show = false
+      },
+      enter(){
+        if(this.isPc){
+          console.log(this.getStyle(this.$refs.header, 'height') + this.getStyle(this.$refs.main, 'height') + 'px')
+          this.$refs.mask.style.height = +this.getStyle(this.$refs.header, 'height') + +this.getStyle(this.$refs.main, 'height') + 'px'
+        }
+      },
+      afterLeave(){
+        if (this.isPc) {
+          this.$refs.mask.style.height = 'auto'
+        }
+      },
+      getStyle(el, attr){
+        if (el.style[attr]) {
+          return el.style[attr].replace('px', '')
+        }
+        if (window.getComputedStyle) {
+          return getComputedStyle(el, false)[attr].replace('px', '')
+        } else {
+          return el.currentStyle[attr].replace('px', '')
+        }
+        return [el, attr]
       }
     }
   }
 </script>
 <style scoped lang="less" type="text/less">
+  .select-wrapper{
+    position: relative;
+    height: 30px;
+  }
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+  }
   .select-container {
     display: flex;
-    padding: 0 10px;
+    position: relative;
+    padding-left: 10px;
     border: 1px solid #ccc;
   }
   .payway {
@@ -97,11 +139,12 @@
       .logo{
         height: 100%;
         vertical-align: top;
+        margin-right: 10px;
       }
     }
     .pc-list {
       position: absolute;
-      top: 40px;
+      top: 30px;
       left: 0;
       z-index: 1;
       width: 100%;
@@ -110,14 +153,15 @@
       ul > li {
         display: flex;
         align-items: center;
-        padding: 5px 15px;
-        height: 30px;
+        padding: 10px 15px;
+        height: 20px;
         line-height: 30px;
         border-bottom: 1px solid #eee;
         cursor: default;
         .logo {
           height: 100%;
           vertical-align: top;
+          margin-right: 10px;
         }
         &:hover {
           background-color: #f5f5f5;
@@ -166,7 +210,7 @@
       }
     }
   }
-
+  
   .pc-fade-enter, .pc-fade-leave-to {
     transform: translateY(-100%);
   }
