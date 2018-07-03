@@ -13,10 +13,10 @@
         <img :src="selectImg" alt="带图select">
         <p>带图片的select</p>
       </div>
-      <div class="item img" @click="switchSelect">
+      <router-link class="item img" to="/msgBox" tag="div">
         <img :src="msgImg" alt="消息提示">
         <p>消息提示</p>
-      </div>
+      </router-link>
       <div class="item switch">
         <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
         <p>冒泡泡</p>

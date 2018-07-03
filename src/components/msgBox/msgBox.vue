@@ -32,7 +32,7 @@
       },
       msg   : {
         type   : String,
-        default: ''
+        default: '说点什么吧'
       }
     },
     data(){

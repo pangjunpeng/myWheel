@@ -15,6 +15,6 @@ export default {
     background-color: #fafafa;
   }
   #app{
-    font-size: 1.5em;
+    font-size: .4rem;
   }
 </style>
