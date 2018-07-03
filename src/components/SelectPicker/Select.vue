@@ -11,7 +11,7 @@
           <ul class="select-main" ref="slidePart">
             <li class="select-item" v-for="(item,index) in lists" :key="item.id">{{item.text}}</li>
           </ul>
-          <div class="white-shake" ref="slideEl"></div>
+          <div class="white-shake" ref="slideEl" @click="alert"></div>
         </div>
       </div>
     </transition>
@@ -43,16 +43,18 @@
     },
     methods: {
       pick(){
-        console.log(this.res)
         this.$emit('result', this.res)
+        this.hide()
+      },
+      cancel(){
         this.hide()
       },
       hide(){
         this.$emit('update:isShow', false)
       },
-      cancel(){
-        this.hide()
-      },
+      alert(){
+        this.$emit('msg', '请切换至手机模式')
+      }
     },
     mounted(){
       let self = this

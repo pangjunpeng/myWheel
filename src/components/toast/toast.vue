@@ -38,6 +38,7 @@
     position: fixed;
     bottom: 100px;
     left: 50%;
+    z-index: 999;
     max-width: 80%;
     transform: translateX(-50%);
     padding: 8px 15px;

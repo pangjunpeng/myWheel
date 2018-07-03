@@ -86,7 +86,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 998;
+    z-index: 999;
     background-color: rgba(0, 0, 0, .4);
   }
 

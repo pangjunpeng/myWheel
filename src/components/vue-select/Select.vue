@@ -75,7 +75,6 @@
       },
       enter(){
         if(this.isPc){
-          console.log(this.getStyle(this.$refs.header, 'height') + this.getStyle(this.$refs.main, 'height') + 'px')
           this.$refs.mask.style.height = +this.getStyle(this.$refs.header, 'height') + +this.getStyle(this.$refs.main, 'height') + 'px'
         }
       },
@@ -115,6 +114,7 @@
     position: relative;
     padding-left: 10px;
     border: 1px solid #ccc;
+    background-color: #fff;
   }
   .payway {
     flex: 2;
@@ -150,24 +150,28 @@
       width: 100%;
       border: 1px solid #ccc;
       background-color: #fff;
-      ul > li {
-        display: flex;
-        align-items: center;
-        padding: 10px 15px;
-        height: 20px;
-        line-height: 30px;
-        border-bottom: 1px solid #eee;
-        cursor: default;
-        .logo {
-          height: 100%;
-          vertical-align: top;
-          margin-right: 10px;
-        }
-        &:hover {
-          background-color: #f5f5f5;
-        }
-        &:last-child {
-          border-bottom: 0;
+      ul{
+        max-height: 200px;
+        overflow: auto;
+        li {
+          display: flex;
+          align-items: center;
+          padding: 10px 15px;
+          height: 20px;
+          line-height: 30px;
+          border-bottom: 1px solid #eee;
+          cursor: default;
+          .logo {
+            height: 100%;
+            vertical-align: top;
+            margin-right: 10px;
+          }
+          &:hover {
+            background-color: #f5f5f5;
+          }
+          &:last-child {
+            border-bottom: 0;
+          }
         }
       }
     }
@@ -187,6 +191,8 @@
         width: 80%;
         padding: 10px 0;
         background: #fff;
+        max-height: 250px;
+        overflow: auto;
         li {
           display: flex;
           align-items: center;

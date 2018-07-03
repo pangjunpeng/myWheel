@@ -28,7 +28,7 @@
         @selectInfo="getSelectInfo"
         v-show="isShowSelect"></v-select>
       <actionsheet :opts="popupData" :isShow.sync="isShowAct" @handler="handlerAct"></actionsheet>
-      <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes"></my-select>
+      <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
       <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
       <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
       <p v-show="resFlag" class="mt">获取到数据为 {{result}}</p>
@@ -131,6 +131,9 @@
         }
         return this.bankLists
       },
+      isPc(){
+        return navigator.userAgent.match('Mobile')
+      }
     },
     methods: {
       switchBubble(){
@@ -162,6 +165,9 @@
           this.resFlag = !this.resFlag
         }
         this.isShowMbSelect = !this.isShowMbSelect
+      },
+      getTips(data){
+        this.alert(data)
       },
       getRes(data){
         this.s2Data = data
@@ -211,12 +217,13 @@
       this.mouse = new MouseBubble()
     },
     mounted(){
-      if(navigator.userAgent.match('Mobile')){
+      if(this.isPc){
         this.toast('快速点击左下角5次可调出vconsole哦~')
       }else{
         this.toast('手机访问效果更佳哦~')
+        console.log('欢迎欢迎~')
+        console.log("%c", "padding:50px;background:url('https://upload-images.jianshu.io/upload_images/11264410-e6f607b0d522c693.gif');background-size:auto 100%;");
       }
-      console.log('欢迎欢迎~')
     }
   }
 </script>
