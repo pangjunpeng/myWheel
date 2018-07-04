@@ -70,13 +70,14 @@
     padding: 1rem;
     max-width: 520px;
     margin: 0 auto;
+    position: relative;
   }
   .msg-wrapper{
+    width: 80%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80%;
     text-align: center;
     input{
       border: 1px solid;
