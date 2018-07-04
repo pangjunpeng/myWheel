@@ -45,20 +45,16 @@ export default {
     right: 0;
   }
 
-  .slide-next-enter-active, .slide-pre-enter-active {
-    transition: all 1.2s ease;
+  .slide-next-enter-active, .slide-pre-enter-active, .slide-next-leave-active, .slide-pre-leave-active {
+    transition: all .8s ease;
   }
 
-  .slide-next-enter {
-    left: 0;
-    right: 0;
+  .slide-next-enter, .slide-pre-leave {
     transform: translateX(50px);
     opacity: 0;
   }
 
-  .slide-pre-enter {
-    left: 0;
-    right: 0;
+  .slide-pre-enter, .slide-next-leave {
     transform: translateX(-50px);
     opacity: 0;
   }
