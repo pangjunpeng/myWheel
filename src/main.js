@@ -7,10 +7,14 @@ import '@/assets/style/reset.css'
 
 Vue.config.productionTip = false
 change()
-window.onresize = change
+let timer
+window.onresize = function(){
+  clearTimeout(timer)
+  timer = setTimeout(change, 200)
+}
 function change(){
   document.getElementsByTagName('html')[0].style.fontSize = document.documentElement.clientWidth / 10 + 'px'
-  if(document.documentElement.clientWidth > 480){
+  if(document.documentElement.clientWidth > 520){
     document.getElementsByTagName('html')[0].style.fontSize = 52 + 'px'
   }
 }

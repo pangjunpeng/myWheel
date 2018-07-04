@@ -66,9 +66,11 @@
   @keyframes leave {
     0%{
       opacity: 1;
+      bottom: 100px;
     }
     100%{
       opacity: 0;
+      bottom: 100px;
     }
   }
 </style>

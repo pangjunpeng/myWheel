@@ -270,6 +270,7 @@
       margin: 0 auto;
       border-radius: .6rem;
       background: #a77ee8;
+      transition: all .2s;
       &.close {
         background: #ccc;
         i{

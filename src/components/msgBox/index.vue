@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="msg-wrapper">
       <input type="text" placeholder="请输入提示信息" v-model="inputMsg">
       <div class="item item-alert" @click="alert(msg)">打开alert提示框</div>
@@ -65,10 +65,16 @@
   }
 </script>
 <style scoped type="text/less" lang="less">
+  .container{
+    height: 100%;
+    padding: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
   .msg-wrapper{
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 80%;
     text-align: center;
