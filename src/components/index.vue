@@ -297,7 +297,7 @@
       height: .75rem;
       margin: 0 auto;
       border-radius: .6rem;
-      background: #a77ee8;
+      background: @color;
       transition: all .2s;
       &.close {
         background: #ccc;

@@ -94,7 +94,7 @@
       margin: .6rem 0;
       border-radius: 5px;
       padding: .3rem 0;
-      background: #a77ee8;
+      background: @color;
       border: 1px solid #8e6cc3;
       color: #fff;
     }
