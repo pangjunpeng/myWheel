@@ -4,8 +4,8 @@
       <div class="select-wrapper" v-show="isShow">
         <div class="select-header">
           <span class="select-title blod">地区选择</span>
-          <span class="cancel" @click="cancel">取消</span>
-          <span class="ensure" @click="pick">确定</span>
+          <span class="cancel" @click.stop="cancel">取消</span>
+          <span class="ensure" @click.stop="pick">确定</span>
         </div>
         <div class="select-content">
           <ul class="select-main" ref="slidePart">
@@ -59,16 +59,17 @@
     mounted(){
       let self = this
       var sPicker = new Spicker({
-        el: this.$refs.slideEl,
-        target: this.$refs.slidePart,
+        el: this.$refs.slideEl, // 滑动元素
+        target: this.$refs.slidePart, // 被滑动元素
+        index: 11, //默认显示第几个，不设置默认为第一个
       }, function(itemIndex){
-        self.res = self.lists[itemIndex]
+        self.res = self.lists[itemIndex] // 初始化完成，返回了第几个
         self.$emit('result', self.res)
       })
       sPicker.scrollTrigger({
-        scrollX: false,
+        scrollX: false, // 可开启x轴和y轴 可滑动
       },function(res){
-        let index = res.itemIndex
+        let index = res.itemIndex // 滑动到第几个元素上
         self.res = self.lists[index]
       })
     },

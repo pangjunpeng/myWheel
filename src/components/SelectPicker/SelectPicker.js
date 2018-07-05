@@ -10,8 +10,9 @@
 function SelectPicker (params, fn) {
   this.el = params.el
   this.target = params.target
+  this.initIndex = params.index
   this.init()
-  this.scrollTo('top')
+  this.scrollTo(this.initIndex || 'top')
   fn && fn(this.itemIndex)
 }
 SelectPicker.prototype = {
@@ -78,7 +79,7 @@ SelectPicker.prototype = {
       if(scrollY) {
         res.translateY = this.preDisY = this.disY
         res.itemIndex = self.itemIndex
-        self.scrollTo(self.initTop - self.itemIndex * self.tItemHeight)
+        self.scrollTo(self.initTop - self.itemIndex * self.tItemHeight + 'px')
       }
       !scrollX && !scrollY && (res = '无法移动，请开启参数')
       if (fn) {
@@ -93,16 +94,22 @@ SelectPicker.prototype = {
     let self = this
     let left = 0, top = 0
     // 设置默认位置
-    if(arguments.length === 1 && arguments[0] === 'top'){
+    if(arguments.length === 1){
       left = 0
+      let index = arguments[0]
+      if(typeof index === 'string'){
+        index === 'top' && (top = self.initTop)
+        index.endsWith('px') && (top = arguments[0].replace('px', ''))
+      }
+      if(typeof arguments[0] === 'number'){
+        top = self.initTop -  arguments[0] * self.tItemHeight
+      }
+    }
+    if(top > self.initTop){
       top = self.initTop
     }
-    if (arguments.length === 1 && typeof arguments[0] === 'number') {
-      left = 0
-      top = arguments[0]
-      if(arguments[0] > self.initTop){
-        top = self.initTop
-      }
+    if(top < self.initBottom){
+      top = self.initBottom
     }
     self.itemIndex = Math.round((self.initTop - top) / self.tItemHeight)
     self.target.childNodes[self.itemIndex].style.fontWeight = 800
