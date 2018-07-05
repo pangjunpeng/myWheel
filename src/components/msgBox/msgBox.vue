@@ -5,10 +5,11 @@
     </transition>
     <transition name="alert-main">
       <div class="alert-msg" v-show="isShow">
-        <div class="alert-header">提示</div>
+        <div class="alert-header" v-if="!isPrompt">提示</div>
+        <div class="alert-header" v-else>请输入</div>
         <div class="alert-content">
           <div v-if="!isPrompt">{{msg}}</div>
-          <div v-else><input type="text" v-model="content"></div>
+          <div v-else><input type="text" v-model="content" ref="promptValue"></div>
         </div>
         <div class="alert-btns">
           <div v-if="!isAlert" class="cancel" @click="cancel">取消</div>
@@ -74,6 +75,15 @@
         }
         if (this.isPrompt) {
           return this.content
+        }
+      }
+    },
+    watch:{
+      isShow(a, b){
+        if(a === true && this.type === 'prompt'){
+          this.$nextTick(function(){
+            this.$refs.promptValue.focus()
+          })
         }
       }
     }

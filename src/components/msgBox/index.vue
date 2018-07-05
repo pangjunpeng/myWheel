@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="msg-wrapper">
-      <input type="text" placeholder="请输入提示信息" v-model="inputMsg">
+      <input type="text" placeholder="请输入提示信息" v-model="inputMsg" ref="input">
       <div class="item item-alert" @click="alert(msg)">打开alert提示框</div>
       <div class="item item-confirm" @click="confirm(msg)">打开confirm确认框</div>
       <div class="item item-prompt" @click="prompt">打开prompt输入框</div>
@@ -39,8 +39,10 @@
       getMsg(data){
         if(data){
           data === true ? this.toast('点了确定') : this.toast('输入了' + data)
-        }else{
+        }else if(data === false){
           this.toast('取消了')
+        }else{
+          this.toast('没有输入')
         }
       },
       alert(msg){
@@ -61,7 +63,10 @@
         this.tipsMsg = msg
         this.isShowToast = true
       }
-    }
+    },
+    mounted(){
+      this.$refs.input.focus()
+    },
   }
 </script>
 <style scoped type="text/less" lang="less">
@@ -80,7 +85,7 @@
     transform: translate(-50%, -50%);
     text-align: center;
     input{
-      border: 1px solid;
+      border: 1px solid #666;
       padding: .15rem;
       width: 80%;
       border-radius: 5px;

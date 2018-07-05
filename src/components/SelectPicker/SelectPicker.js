@@ -1,12 +1,8 @@
 /**
- * scrollTrigger.js
+ * selectorPicker.js
  * Created by pang On 2018-06-27 18:30 。
  */
-/**
- *
- * @param parmas
- * @constructor
- */
+
 function SelectPicker (params, fn) {
   this.el = params.el
   this.target = params.target
@@ -78,7 +74,7 @@ SelectPicker.prototype = {
       }
       if(scrollY) {
         res.translateY = this.preDisY = this.disY
-        res.itemIndex = self.itemIndex
+        res.index = self.itemIndex
         self.scrollTo(self.initTop - self.itemIndex * self.tItemHeight + 'px')
       }
       !scrollX && !scrollY && (res = '无法移动，请开启参数')

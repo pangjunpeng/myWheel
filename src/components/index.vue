@@ -5,6 +5,10 @@
         <img :src="mbSelectImg" alt="手机select">
         <p>仿手机原生select</p>
       </div>
+      <router-link class="item img" to="/msgBox" tag="div">
+        <img :src="msgImg" alt="消息提示">
+        <p>消息提示</p>
+      </router-link>
       <div class="item img" @click="switchAct">
         <img :src="actionsheetImg" alt="actionsheet提示">
         <p>actionsheet</p>
@@ -13,10 +17,6 @@
         <img :src="selectImg" alt="带图select">
         <p>带图片的select</p>
       </div>
-      <router-link class="item img" to="/msgBox" tag="div">
-        <img :src="msgImg" alt="消息提示">
-        <p>消息提示</p>
-      </router-link>
       <div class="item switch">
         <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
         <p>冒泡泡</p>
@@ -112,16 +112,37 @@
           }
         }],
         lists: [
-          {id: 0, value: "item0", text: "选项1"},
-          {id: 1, value: "item1", text: "选项2"},
-          {id: 2, value: "item2", text: "选项3"},
-          {id: 3, value: "item3", text: "选项4"},
-          {id: 4, value: "item4", text: "选项5"},
-          {id: 5, value: "item5", text: "选项6"},
-          {id: 6, value: "item6", text: "选项7"},
-          {id: 7, value: "item7", text: "选项8"},
-          {id: 8, value: "item8", text: "选项9"},
-          {id: 9, value: "item9", text: "选项10"}],
+          {
+            id   : 0,
+            value: "item0",
+            text : "默认1"
+          },
+          {
+            id   : 1,
+            value: "item1",
+            text : "默认2"
+          },
+          {
+            id   : 2,
+            value: "item2",
+            text : "默认3"
+          },
+          {
+            id   : 3,
+            value: "item3",
+            text : "默认4"
+          },
+          {
+            id   : 4,
+            value: "item4",
+            text : "默认5"
+          },
+          {
+            id   : 5,
+            value: "item5",
+            text : "默认6"
+          },
+        ]
       }
     },
     computed: {
@@ -213,7 +234,12 @@
       this.actionsheetImg = require('../assets/img/actionSheet.png')
       this.mbSelectImg = require('../assets/img/select.png')
       this.msgImg = require('../assets/img/msg.png')
-  
+      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
+        .then(res => {
+          setTimeout(_=>{
+            this.lists = res.data
+          }, 3000)
+        })
       this.mouse = new MouseBubble()
     },
     mounted(){
@@ -224,6 +250,7 @@
         console.log('欢迎欢迎~')
         console.log("%c", "padding:50px;background:url('https://upload-images.jianshu.io/upload_images/11264410-e6f607b0d522c693.gif');background-size:auto 100%;");
       }
+      
     }
   }
 </script>
@@ -257,9 +284,10 @@
       width: 1.5rem;
     }
     &>p{
+      height: .6rem;
+      line-height: .6rem;
       position: absolute;
       bottom: .5rem;
-      white-space: nowrap;
     }
   }
   .switch{

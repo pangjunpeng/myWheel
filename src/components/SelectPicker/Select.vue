@@ -34,11 +34,20 @@
         default(){
           return []
         }
+      },
+      index: {
+        type: [Number, String],
+        default: 0
       }
     },
     data(){
       return {
         sRes: {}
+      }
+    },
+    computed: {
+      hasData(){
+        return this.lists.length
       }
     },
     methods: {
@@ -54,24 +63,27 @@
       },
       alert(){
         this.$emit('msg', '请切换至手机模式')
+      },
+      render(){
+        let self = this
+        var sPicker = new Spicker({
+          el    : this.$refs.slideEl, // 滑动元素
+          target: this.$refs.slidePart, // 被滑动元素
+          index : this.index
+        }, function (itemIndex) {
+          self.res = self.lists[itemIndex] // 初始化完成，返回了第几个
+          self.$emit('result', self.res)
+        })
+        sPicker.scrollTrigger({
+          scrollX: false, // 可开启x轴和y轴 可滑动
+        }, function (res) {
+          let index = res.itemIndex // 滑动到第几个元素上
+          self.res = self.lists[index]
+        })
       }
     },
-    mounted(){
-      let self = this
-      var sPicker = new Spicker({
-        el: this.$refs.slideEl, // 滑动元素
-        target: this.$refs.slidePart, // 被滑动元素
-        index: 11, //默认显示第几个，不设置默认为第一个
-      }, function(itemIndex){
-        self.res = self.lists[itemIndex] // 初始化完成，返回了第几个
-        self.$emit('result', self.res)
-      })
-      sPicker.scrollTrigger({
-        scrollX: false, // 可开启x轴和y轴 可滑动
-      },function(res){
-        let index = res.itemIndex // 滑动到第几个元素上
-        self.res = self.lists[index]
-      })
+    updated(){
+      this.hasData && this.render()
     },
   }
 </script>
