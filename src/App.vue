@@ -1,5 +1,14 @@
 <template>
   <div id="app">
+    <div class="header">
+      <div class="header-back">
+        <i class="iconfont icon-houtui"></i>
+      </div>
+      <div class="header-title">{{this.$route.meta.title}}</div>
+      <div class="header-logo">
+        <i class="iconfont icon-contact"></i>
+      </div>
+    </div>
     <transition :name="routeSwitch">
       <keep-alive>
         <router-view/>
@@ -37,6 +46,39 @@ export default {
   }
   #app{
     font-size: .4rem;
+    .header{
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      width: 100%;
+      height: 50px;
+      background-color: #fff;
+      .header-title{
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-size: 1.3em;
+      }
+      .header-back, .header-logo{
+        position: absolute;
+        top: 0;
+        width: 50px;
+        height: 100%;
+        line-height: 50px;
+        text-align: center;
+        i{
+          font-size: 1.3em;
+          color: @color;
+        }
+      }
+      .header-back{
+        left: 0;
+      }
+      .header-logo{
+        right: 0;
+      }
+    }
   }
 
   .slide-next, .slide-pre {

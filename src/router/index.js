@@ -10,12 +10,18 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: Index,
+      meta: {
+        title: '首页',
+      }
     },
     {
       path: '/msgBox',
       name: 'msgBox',
-      component: msgBox
+      component: msgBox,
+      meta: {
+        title: '消息提示',
+      }
     },
     {
       path: '*',

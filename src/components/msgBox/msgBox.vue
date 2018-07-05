@@ -86,6 +86,12 @@
           })
         }
       }
+    },
+    created(){
+      console.log('msgBox created')
+    },
+    activated(){
+      console.log('msgBox activated')
     }
   }
 </script>

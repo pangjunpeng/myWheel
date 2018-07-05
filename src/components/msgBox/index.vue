@@ -67,6 +67,12 @@
     mounted(){
       this.$refs.input.focus()
     },
+    created(){
+      console.log('indexMsgBox created')
+    },
+    activated(){
+      console.log('indexMsgBox activated')
+    }
   }
 </script>
 <style scoped type="text/less" lang="less">

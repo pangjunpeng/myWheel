@@ -230,6 +230,7 @@
       }
     },
     created(){
+      console.log('index created')
       this.selectImg = require('../assets/img/popup.png')
       this.actionsheetImg = require('../assets/img/actionSheet.png')
       this.mbSelectImg = require('../assets/img/select.png')
@@ -251,6 +252,9 @@
         console.log("%c", "padding:50px;background:url('https://upload-images.jianshu.io/upload_images/11264410-e6f607b0d522c693.gif');background-size:auto 100%;");
       }
       
+    },
+    activated(){
+      console.log('index activated')
     }
   }
 </script>
@@ -265,6 +269,9 @@
     padding: 1rem;
     max-width: 520px;
     margin: 0 auto;
+    .list{
+      margin-top: 50px;
+    }
   }
   .item{
     display: flex;
