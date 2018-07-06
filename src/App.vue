@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div class="header">
-      <div class="header-back">
+      <router-link v-if="isShowBack" class="header-back" tag="div" to="/">
         <i class="iconfont icon-houtui"></i>
-      </div>
+      </router-link>
       <div class="header-title">{{this.$route.meta.title}}</div>
       <div class="header-logo">
         <i class="iconfont icon-contact"></i>
@@ -23,6 +23,11 @@ export default {
   data(){
     return {
       routeSwitch: 'slide-next'
+    }
+  },
+  computed: {
+    isShowBack(){
+      return this.$route.path !== '/'
     }
   },
   watch: {
