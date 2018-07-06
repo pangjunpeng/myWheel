@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <div class="header">
-      <router-link v-if="isShowBack" class="header-back" tag="div" to="/">
-        <i class="iconfont icon-houtui"></i>
-      </router-link>
+      <transition>
+        <router-link v-if="isShowBack" class="header-back" tag="div" to="/">
+          <i class="iconfont icon-houtui"></i>
+        </router-link>
+      </transition>
       <div class="header-title">{{this.$route.meta.title}}</div>
       <div class="header-logo">
         <i class="iconfont icon-contact"></i>
@@ -85,7 +87,13 @@ export default {
       }
     }
   }
-
+  
+  .v-enter, .v-leave-to{
+    opacity: 0;
+  }
+  .v-enter-active, .v-leave-active{
+    transition: opacity .2s;
+  }
   .slide-next, .slide-pre {
     position: absolute;
     left: 0;
