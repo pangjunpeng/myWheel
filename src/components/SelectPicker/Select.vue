@@ -5,7 +5,7 @@
         <div class="select-header">
           <span class="select-title blod">地区选择</span>
           <span class="cancel" @click.stop="cancel">取消</span>
-          <span class="ensure" @click.stop="pick">确定</span>
+          <span class="ensure" @click.stop.prevent="pick">确定</span>
         </div>
         <div class="select-content">
           <ul class="select-main" ref="slidePart">
@@ -72,12 +72,11 @@
           index : this.index
         }, function (itemIndex) {
           self.res = self.lists[itemIndex] // 初始化完成，返回了第几个
-          self.$emit('result', self.res)
         })
         sPicker.scrollTrigger({
           scrollX: false, // 可开启x轴和y轴 可滑动
         }, function (res) {
-          let index = res.itemIndex // 滑动到第几个元素上
+          let index = res.index // 滑动到第几个元素上
           self.res = self.lists[index]
         })
       }
@@ -105,7 +104,8 @@
       line-height: 40px;
       position: absolute;
       top: -40px;
-      border-bottom: 1px solid #ccc;
+      z-index: 2;
+      border-bottom: 1px solid @borderColor;
       background-color: #fff;
       .select-title, .cancel, .ensure{
         position: absolute;
@@ -142,7 +142,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(#ccc, transparent, #ccc);
+        background: linear-gradient(@borderColor, transparent, @borderColor);
         &::before, &::after{
           content: '';
           display: block;
@@ -150,7 +150,7 @@
           top: 50%;
           width: 100%;
           height: 1px;
-          background-color: #ccc;
+          background-color: @borderColor;
         }
         &::before {
           transform: translateY(-20px);

@@ -29,7 +29,7 @@ SelectPicker.prototype = {
     if (style !== 'none') {
       let translate = ''
       if(style.match('translate')){
-        translate = style.match(/translate\((.*)px, (.*)px\)/)
+        translate = style.match(/translate3d\((.*)px, (.*)px, 0px\)/)
       }else if(style.match('matrix')){
         translate = style.match(/matrix\(1, 0, 0, 1, (.*), (.*)\)/)
       }
@@ -52,22 +52,30 @@ SelectPicker.prototype = {
       if (scrollY) {
         this.currentClientY = e.changedTouches[0].clientY
         this.disY = this.currentClientY - this.startY + this.preDisY
-        if(this.disY > self.initTop){
-          this.disY = self.initTop
+        if(this.disY > (self.initTop + self.tItemHeight / 2)){
+          this.disY = self.initTop + self.tItemHeight / 2
         }
-        if(this.disY < self.initBottom){
-          this.disY = self.initBottom
+        if(this.disY < (self.initBottom - self.tItemHeight / 2)){
+          this.disY = (self.initBottom - self.tItemHeight / 2)
         }
-        self.itemIndex = Math.round((self.initTop - this.disY) / self.tItemHeight)
+        self.itemIndex = Math.round((self.initTop - this.disY) / self.tItemHeight);
+        (self.initTop - this.disY) / self.tItemHeight < 0 ? (self.itemIndex = -1) : 1
         self.target.childNodes.forEach(function(item){
           item.style.fontWeight = ''
         })
-        self.target.childNodes[self.itemIndex].style.fontWeight = 800
+        let weightNode = self.target.childNodes[self.itemIndex]
+        weightNode && (weightNode.style.fontWeight = 800)
       }
-      self.target.style.transform = `translate(${this.disX}px, ${this.disY}px)`
+      self.target.style.transform = `translate3d(${this.disX}px, ${this.disY}px, 0px)`
     }
     self.el.ontouchend = function (e) {
       e.preventDefault()
+      if(self.itemIndex < 0){
+        self.itemIndex = 0
+      }
+      if(self.itemIndex >= self.target.childNodes.length){
+        self.itemIndex = self.target.childNodes.length - 1
+      }
       var res = {}
       if(scrollX){
         res.translateX = this.preDisX = this.disX
@@ -109,7 +117,7 @@ SelectPicker.prototype = {
     }
     self.itemIndex = Math.round((self.initTop - top) / self.tItemHeight)
     self.target.childNodes[self.itemIndex].style.fontWeight = 800
-    self.target.style.transform = `translate(${left}px, ${top}px)`
+    self.target.style.transform = `translate3d(${left}px, ${top}px, 0px)`
   },
   getStyle: function(obj, attr){
     if(obj.style[attr]){

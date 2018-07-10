@@ -31,7 +31,15 @@
       <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
       <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
       <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
-      <p v-show="resFlag" class="mt">获取到数据为 {{result}}</p>
+      <div v-show="resFlag" class="mt">
+        获取到数据为
+        <ul class="result-tb mt">
+          <li v-for="(value, key, index) in result" :key="index">
+            <span>{{key}}</span>
+            <span>{{value}}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -54,7 +62,7 @@
     },
     data(){
       return {
-        result: {},
+        result: undefined,
         resFlag: false,
         mouse: null,
         isShowBubble: true,
@@ -179,12 +187,13 @@
       },
       switchMbSelect(){
         this.isShowSelect = false
-        this.result = this.s2Data
+        this.result = this.s2Data.hasOwnProperty('id')
         if(!this.isShowMbSelect && this.resFlag){
           this.resFlag = true
         }else{
           this.resFlag = !this.resFlag
         }
+        this.s2Data.hasOwnProperty('id') ? (this.resFlag = true) : (this.resFlag = false)
         this.isShowMbSelect = !this.isShowMbSelect
       },
       getTips(data){
@@ -193,6 +202,7 @@
       getRes(data){
         this.s2Data = data
         this.result = this.s2Data
+        this.resFlag = true
       },
       openBubble(){
         this.mouse.add()
@@ -235,12 +245,12 @@
       this.actionsheetImg = require('../assets/img/actionSheet.png')
       this.mbSelectImg = require('../assets/img/select.png')
       this.msgImg = require('../assets/img/msg.png')
-      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
-        .then(res => {
-          setTimeout(_=>{
-            this.lists = res.data
-          }, 3000)
-        })
+//      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
+//        .then(res => {
+//          setTimeout(_=>{
+//            this.lists = res.data
+//          }, 3000)
+//        })
       this.mouse = new MouseBubble()
     },
     mounted(){
@@ -284,7 +294,7 @@
     height: 4rem;
     padding: 1rem;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 1px solid @borderColor;
     margin-top: -1px;
     margin-left: -1px;
     &>span, &>img{
@@ -307,7 +317,7 @@
       background: @color;
       transition: all .2s;
       &.close {
-        background: #ccc;
+        background: @borderColor;
         i{
           right: .75rem;
         }
@@ -321,6 +331,23 @@
         background: #fff;
         border-radius: 50%;
         transition: all .2s;
+      }
+    }
+  }
+  .result-tb{
+    li{
+      display: flex;
+      span{
+        flex: 1;
+        width: 50%;
+        height: .6rem;
+        line-height: .6rem;
+        margin-left: -1px;
+        margin-top: -1px;
+        padding: 0 .2rem;
+        overflow: auto;
+        white-space: nowrap;
+        border: 1px solid @borderColor;
       }
     }
   }

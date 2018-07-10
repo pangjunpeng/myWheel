@@ -45,7 +45,7 @@
     font-size: 14px;
     border-radius: 15px;
     background-color: #333;
-    color: #ccc;
+    color: @borderColor;
   }
   .toast-enter-active{
     animation: enter 1s;

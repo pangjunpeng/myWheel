@@ -125,7 +125,7 @@
       padding: 20px 10px;
       input {
         width: 80%;
-        border: 1px solid #ccc;
+        border: 1px solid @borderColor;
       }
     }
     .alert-btns {

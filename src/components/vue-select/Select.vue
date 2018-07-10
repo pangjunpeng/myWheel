@@ -113,7 +113,7 @@
     display: flex;
     position: relative;
     padding-left: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid @borderColor;
     background-color: #fff;
   }
   .payway {
@@ -148,7 +148,7 @@
       left: 0;
       z-index: 1;
       width: 100%;
-      border: 1px solid #ccc;
+      border: 1px solid @borderColor;
       background-color: #fff;
       ul{
         max-height: 200px;
