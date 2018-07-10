@@ -12,10 +12,10 @@
       </div>
     </div>
     <transition :name="routeSwitch">
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
-    </transition>
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
+      </transition>
   </div>
 </template>
 

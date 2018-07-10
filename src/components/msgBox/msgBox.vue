@@ -87,12 +87,6 @@
         }
       }
     },
-    created(){
-      console.log('msgBox created')
-    },
-    activated(){
-      console.log('msgBox activated')
-    }
   }
 </script>
 <style scoped type="text/less" lang="less">

@@ -1,45 +1,51 @@
 <template>
-  <div class="container">
-    <div class="list clearfix">
-      <div class="item img" @click="switchMbSelect">
-        <img :src="mbSelectImg" alt="手机select">
-        <p>仿手机原生select</p>
+  <div class="wrapper">
+    <div class="container">
+      <div class="list clearfix">
+        <div class="item img" @click="switchMbSelect">
+          <img :src="mbSelectImg" alt="手机select">
+          <p>移动端select效果</p>
+        </div>
+        <router-link class="item img" to="/msgBox" tag="div">
+          <img :src="msgImg" alt="消息提示">
+          <p>消息提示</p>
+        </router-link>
+        <div class="item img" @click="switchAct">
+          <img :src="actionsheetImg" alt="actionsheet提示">
+          <p>actionsheet</p>
+        </div>
+        <div class="item img" @click="switchSelect">
+          <img :src="selectImg" alt="带图select">
+          <p>带图片的select</p>
+        </div>
+        <div class="item switch">
+          <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
+          <p>冒泡泡</p>
+        </div>
       </div>
-      <router-link class="item img" to="/msgBox" tag="div">
-        <img :src="msgImg" alt="消息提示">
-        <p>消息提示</p>
-      </router-link>
-      <div class="item img" @click="switchAct">
-        <img :src="actionsheetImg" alt="actionsheet提示">
-        <p>actionsheet</p>
-      </div>
-      <div class="item img" @click="switchSelect">
-        <img :src="selectImg" alt="带图select">
-        <p>带图片的select</p>
-      </div>
-      <div class="item switch">
-        <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
-        <p>冒泡泡</p>
+      <div class="main">
+        <v-select
+          :select-data="selectData"
+          @selectInfo="getSelectInfo"
+          v-show="isShowSelect"
+          class="mt"></v-select>
+        <actionsheet :opts="popupData" :isShow.sync="isShowAct" @handler="handlerAct"></actionsheet>
+        <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
+        <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
+        <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
+        <div v-show="resFlag" class="mt">
+          获取到数据为
+          <ul class="result-tb mt">
+            <li v-for="(value, key, index) in result" :key="index">
+              <span>{{key}}</span>
+              <span>{{value}}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="main mt">
-      <v-select
-        :select-data="selectData"
-        @selectInfo="getSelectInfo"
-        v-show="isShowSelect"></v-select>
-      <actionsheet :opts="popupData" :isShow.sync="isShowAct" @handler="handlerAct"></actionsheet>
-      <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
-      <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
-      <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
-      <div v-show="resFlag" class="mt">
-        获取到数据为
-        <ul class="result-tb mt">
-          <li v-for="(value, key, index) in result" :key="index">
-            <span>{{key}}</span>
-            <span>{{value}}</span>
-          </li>
-        </ul>
-      </div>
+    <div class="footer">
+      <span>我是底线</span>
     </div>
   </div>
 </template>
@@ -123,32 +129,32 @@
           {
             id   : 0,
             value: "item0",
-            text : "默认1"
+            text : "默认0"
           },
           {
             id   : 1,
             value: "item1",
-            text : "默认2"
+            text : "默认1"
           },
           {
             id   : 2,
             value: "item2",
-            text : "默认3"
+            text : "默认2"
           },
           {
             id   : 3,
             value: "item3",
-            text : "默认4"
+            text : "默认3"
           },
           {
             id   : 4,
             value: "item4",
-            text : "默认5"
+            text : "默认4"
           },
           {
             id   : 5,
             value: "item5",
-            text : "默认6"
+            text : "默认5"
           },
         ]
       }
@@ -245,12 +251,12 @@
       this.actionsheetImg = require('../assets/img/actionSheet.png')
       this.mbSelectImg = require('../assets/img/select.png')
       this.msgImg = require('../assets/img/msg.png')
-//      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
-//        .then(res => {
-//          setTimeout(_=>{
-//            this.lists = res.data
-//          }, 3000)
-//        })
+      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
+        .then(res => {
+          setTimeout(_=>{
+            this.lists = res.data
+          }, 3000)
+        })
       this.mouse = new MouseBubble()
     },
     mounted(){
@@ -275,12 +281,31 @@
     height: 0;
     clear: both;
   }
-  .container{
-    padding: 1rem;
-    max-width: 520px;
-    margin: 0 auto;
-    .list{
-      margin-top: 50px;
+  .wrapper{
+    height: 100%;
+    .container{
+      min-height: 100%;
+      padding: 2rem 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 1rem;
+      margin-top: -1rem;
+      color: #999;
+      span {
+        padding: 0 .5rem;
+      }
+      &::before, &::after {
+        content: '';
+        display: inline-block;
+        width: 30%;
+        height: 1px;
+        background-color: #ccc;
+      }
     }
   }
   .item{
@@ -348,6 +373,9 @@
         overflow: auto;
         white-space: nowrap;
         border: 1px solid @borderColor;
+        &:first-child{
+          font-weight: 600;
+        }
       }
     }
   }

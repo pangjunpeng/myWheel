@@ -77,11 +77,10 @@
 </script>
 <style scoped type="text/less" lang="less">
   .container{
+    position: relative;
     height: 100%;
-    padding: 1rem;
     max-width: 520px;
     margin: 0 auto;
-    position: relative;
   }
   .msg-wrapper{
     width: 80%;

@@ -1,7 +1,9 @@
 待写，回家
 
 使用
+```javascript
 <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" index="0"></my-select>
+```
 
 + **lists**: `Array`  
 传送数据  ex:
