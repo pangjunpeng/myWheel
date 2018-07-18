@@ -3,7 +3,7 @@
     <div class="header">
       <transition>
         <router-link v-if="isShowBack" class="header-back" tag="div" to="/">
-          <i class="iconfont icon-houtui"></i>
+          <i class="iconfont icon-goback"></i>
         </router-link>
       </transition>
       <div class="header-title">{{this.$route.meta.title}}</div>

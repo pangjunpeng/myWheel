@@ -2,20 +2,20 @@
   <div class="wrapper">
     <div class="container">
       <div class="list clearfix">
-        <div class="item img" @click="switchMbSelect">
-          <img :src="mbSelectImg" alt="手机select">
+        <div class="item" @click="switchMbSelect">
+          <icon name="mb-select" class="icon"></icon>
           <p>移动端select效果</p>
         </div>
-        <router-link class="item img" to="/msgBox" tag="div">
-          <img :src="msgImg" alt="消息提示">
+        <router-link class="item" to="/msgBox" tag="div">
+          <icon name="msg" class="icon"></icon>
           <p>消息提示</p>
         </router-link>
-        <div class="item img" @click="switchAct">
-          <img :src="actionsheetImg" alt="actionsheet提示">
+        <div class="item" @click="switchAct">
+          <icon name="actionsheet" class="icon"></icon>
           <p>actionsheet</p>
         </div>
-        <div class="item img" @click="switchSelect">
-          <img :src="selectImg" alt="带图select">
+        <div class="item" @click="switchSelect">
+          <icon name="select" class="icon"></icon>
           <p>带图片的select</p>
         </div>
         <div class="item switch">
@@ -57,6 +57,7 @@
   import mySelect from './SelectPicker/Select'
   import toast from './toast/toast'
   import msgBox from './msgBox/msgBox'
+  import icon from './icon/icon'
   export default{
     name: 'index',
     components: {
@@ -64,7 +65,8 @@
       Actionsheet,
       mySelect,
       toast,
-      msgBox
+      msgBox,
+      icon
     },
     data(){
       return {
@@ -78,10 +80,6 @@
         isShowToast: false,
         s1Data: {},
         s2Data: {},
-        selectImg: '',
-        msgImg: '',
-        actionsheetImg: '',
-        mbSelectImg: '',
         tipsMsg: '',
         msgType: '',
         alertShow: false,
@@ -246,11 +244,6 @@
       }
     },
     created(){
-      console.log('index created')
-      this.selectImg = require('../assets/img/popup.png')
-      this.actionsheetImg = require('../assets/img/actionSheet.png')
-      this.mbSelectImg = require('../assets/img/select.png')
-      this.msgImg = require('../assets/img/msg.png')
       this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
         .then(res => {
           setTimeout(_=>{
@@ -322,8 +315,8 @@
     border: 1px solid @borderColor;
     margin-top: -1px;
     margin-left: -1px;
-    &>span, &>img{
-      width: 1.5rem;
+    .icon{
+      font-size: 3.5em;
     }
     &>p{
       height: .6rem;
@@ -336,6 +329,7 @@
     span{
       display: block;
       position: relative;
+      width: 1.5rem;
       height: .75rem;
       margin: 0 auto;
       border-radius: .6rem;

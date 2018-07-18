@@ -79,7 +79,7 @@
       }
     },
     watch:{
-      isShow(a, b){
+      isShow(a){
         if(a === true && this.type === 'prompt'){
           this.$nextTick(function(){
             this.$refs.promptValue.focus()
