@@ -33,6 +33,7 @@
         <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
         <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
         <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
+        <popup :msg="popMsg"></popup>
         <div v-show="resFlag" class="mt">
           获取到数据为
           <ul class="result-tb mt">
@@ -58,15 +59,17 @@
   import toast from './toast/toast'
   import msgBox from './msgBox/msgBox'
   import icon from './icon/icon'
+  import popup from './popup/popup'
   export default{
     name: 'index',
     components: {
       vSelect: Select,
       Actionsheet,
       mySelect,
-      toast,
       msgBox,
-      icon
+      popup,
+      toast,
+      icon,
     },
     data(){
       return {
@@ -84,6 +87,7 @@
         msgType: '',
         alertShow: false,
         msg: '说点什么呢',
+        popMsg: '',
         bankLists: [
           {
           'branchId'  : '48484848448',

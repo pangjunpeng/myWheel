@@ -94,7 +94,7 @@
       border-radius: 5px;
       padding: .3rem 0;
       background: @color;
-      border: 1px solid #8e6cc3;
+      border: 1px solid #888;
       color: #fff;
     }
   }

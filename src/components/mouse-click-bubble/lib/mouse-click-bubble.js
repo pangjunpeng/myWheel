@@ -9,7 +9,7 @@ class MouseBubble{
 	constructor(params){
 		let options = Object.assign({
 		  value   : ['富强', '民主', '文明', '和谐', '自由', '平等', '公正', '法治', '爱国', '敬业', '诚信', '友善'],
-		  color   : '#a77ee8',
+		  color   : '#999',
 		  distance: 100
 		}, params)
 		if((typeof options.value) !== 'string' && (typeof options.value) !== 'number' && Object.prototype.toString.call(options.value).indexOf('Array')<0){
