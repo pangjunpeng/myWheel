@@ -1,5 +1,11 @@
 @color: #333;
 @colorWhite: #f1f1f1;
 @bgcolor: #424242;
-@borderColor: #999;
+@borderColor: #eee;
 @hoverBgColor: #e1e1e1;
+.clearfix::after {
+  content: '';
+  display: table;
+  height: 0;
+  clear: both;
+}

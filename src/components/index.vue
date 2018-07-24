@@ -1,28 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
-      <div class="list clearfix">
-        <div class="item" @click="switchMbSelect">
-          <icon name="mb-select" class="icon"></icon>
-          <p>移动端select效果</p>
-        </div>
-        <router-link class="item" to="/msgBox" tag="div">
-          <icon name="msg" class="icon"></icon>
-          <p>消息提示</p>
-        </router-link>
-        <div class="item" @click="switchAct">
-          <icon name="actionsheet" class="icon"></icon>
-          <p>actionsheet</p>
-        </div>
-        <div class="item" @click="switchSelect">
-          <icon name="select" class="icon"></icon>
-          <p>带图片的select</p>
-        </div>
-        <div class="item switch">
-          <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
-          <p>冒泡泡</p>
-        </div>
-      </div>
+      <list></list>
       <div class="main">
         <v-select
           :select-data="selectData"
@@ -60,6 +39,7 @@
   import msgBox from './msgBox/msgBox'
   import icon from './icon/icon'
   import popup from './popup/popup'
+  import list from './list/list'
   export default{
     name: 'index',
     components: {
@@ -70,6 +50,8 @@
       popup,
       toast,
       icon,
+      grid,
+      list,
     },
     data(){
       return {
@@ -117,16 +99,16 @@
           'acseq'     : 11594
         }],
         popupData: [{
+          text      : '阳春布德泽',
+          cssClasses: 'content',
+          handler   : function () {
+            this.toast('万物生光辉')
+          }
+        }, {
           text      : '常恐秋节至',
           cssClasses: 'content',
           handler   : function () {
-            this.toast('您选择了行内转账~')
-          }
-        }, {
-          text      : '焜黄华叶衰',
-          cssClasses: 'content',
-          handler   : function () {
-            this.toast('您选择了跨行转账~')
+            this.toast('焜黄华叶衰')
           }
         }],
         lists: [
@@ -276,12 +258,6 @@
   }
 </script>
 <style scoped type="text/less" lang="less">
-  .clearfix::after{
-    content: '';
-    display: table;
-    height: 0;
-    clear: both;
-  }
   .wrapper{
     height: 100%;
     .container{
@@ -309,58 +285,8 @@
       }
     }
   }
-  .item{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    float: left;
-    width: 4rem;
-    height: 4rem;
-    padding: 1rem;
-    text-align: center;
-    border: 1px solid @borderColor;
-    margin-top: -1px;
-    margin-left: -1px;
-    .icon{
-      font-size: 3.5em;
-    }
-    &>p{
-      height: .6rem;
-      line-height: .6rem;
-      position: absolute;
-      bottom: .5rem;
-    }
-  }
-  .switch{
-    span{
-      display: block;
-      position: relative;
-      width: 1.5rem;
-      height: .75rem;
-      margin: 0 auto;
-      border-radius: .6rem;
-      background: @color;
-      transition: all .2s;
-      &.close {
-        background: @hoverBgColor;
-        i{
-          right: .75rem;
-        }
-      }
-      i {
-        position: absolute;
-        right: 0;
-        display: inline-block;
-        width: .75rem;
-        height: .75rem;
-        background: #fff;
-        border-radius: 50%;
-        transition: all .2s;
-      }
-    }
-  }
+
+  
   .result-tb{
     li{
       display: flex;

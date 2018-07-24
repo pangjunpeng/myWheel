@@ -60,6 +60,7 @@ export default {
       z-index: 999;
       width: 100%;
       height: 50px;
+      border-bottom: 1px solid @borderColor;
       background-color: #fff;
       .header-title{
         height: 50px;
