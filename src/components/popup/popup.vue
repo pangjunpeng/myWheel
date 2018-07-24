@@ -1,14 +1,22 @@
 <template>
-  <div class="main">
-    {{}}
-  </div>
+  <transition>
+    <div class="main" v-if="isShow">
+      {{msg}}
+    </div>
+  </transition>
 </template>
 <script>
   export default{
     name: 'popup',
+    props: ['isShow','msg', 'time'],
     data(){
       return {}
     },
+    updated(){
+      setTimeout(() => {
+        this.$emit('update:isShow', false)
+      }, this.time * 1000)
+    }
   }
 </script>
 <style scoped type="text/less" lang="less">
@@ -21,7 +29,19 @@
     z-index: 99999;
     line-height: 50px;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.8);
+    color: @colorWhite;
+    background-color: @bgcolor;
   }
-  
+  .v-enter, .v-leave-to{
+    opacity: 0;
+  }
+  .v-enter-active{
+    transition: all 1s;
+  }
+  .v-leave-active {
+    transition: all 3s;
+  }
+  .v-enter-to, .v-leave {
+    opacity: 1;
+  }
 </style>

@@ -33,7 +33,7 @@
         <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
         <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
         <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
-        <popup :msg="popMsg"></popup>
+        <popup :isShow.sync="isShowPopup" :msg="popMsg" :time="showPopTime"></popup>
         <div v-show="resFlag" class="mt">
           获取到数据为
           <ul class="result-tb mt">
@@ -81,6 +81,7 @@
         isShowAct: false,
         isShowMbSelect: false,
         isShowToast: false,
+        isShowPopup: false,
         s1Data: {},
         s2Data: {},
         tipsMsg: '',
@@ -88,6 +89,7 @@
         alertShow: false,
         msg: '说点什么呢',
         popMsg: '',
+        showPopTime: 0,
         bankLists: [
           {
           'branchId'  : '48484848448',
@@ -115,13 +117,13 @@
           'acseq'     : 11594
         }],
         popupData: [{
-          text      : '行内转账',
+          text      : '常恐秋节至',
           cssClasses: 'content',
           handler   : function () {
             this.toast('您选择了行内转账~')
           }
         }, {
-          text      : '跨行转账',
+          text      : '焜黄华叶衰',
           cssClasses: 'content',
           handler   : function () {
             this.toast('您选择了跨行转账~')
@@ -258,7 +260,9 @@
     },
     mounted(){
       if(this.isPc){
-        this.toast('快速点击左下角5次可调出vconsole哦~')
+        this.popMsg = '快速点击左下角5次可调出vconsole哦~'
+        this.showPopTime = 3
+        this.isShowPopup = true
       }else{
         this.toast('手机访问效果更佳哦~')
         console.log('欢迎欢迎~')
@@ -340,7 +344,7 @@
       background: @color;
       transition: all .2s;
       &.close {
-        background: @borderColor;
+        background: @hoverBgColor;
         i{
           right: .75rem;
         }
