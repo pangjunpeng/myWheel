@@ -1,7 +1,25 @@
 <template>
   <div class="wrapper">
     <div class="container">
-      <list></list>
+      <div class="list clearfix">
+        <div class="item" @click="switchMbSelect">
+          <grid name="mb-select" desc="移动端select效果"></grid>
+        </div>
+        <router-link class="item" to="/msgBox" tag="div">
+          <grid name="msg" desc="消息提示"></grid>
+        </router-link>
+        <div class="item" @click="switchAct">
+          <grid name="actionsheet" desc="actionsheet"></grid>
+        </div>
+        <div class="item" @click="switchSelect">
+          <grid name="select" desc="带图片的select"></grid>
+        </div>
+        <div class="item switch">
+          <grid desc="带图片的select">
+            <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
+          </grid>
+        </div>
+      </div>
       <div class="main">
         <v-select
           :select-data="selectData"
@@ -31,15 +49,15 @@
 </template>
 <script>
   import MouseBubble from './mouse-click-bubble/'
-  import Select from './vue-select/Select'
-  import VConsole from './my_vConsole/lib/vconsole.min'
   import Actionsheet from './vue-actionsheet/actionsheet'
+  import VConsole from './my_vConsole/lib/vconsole.min'
   import mySelect from './SelectPicker/Select'
-  import toast from './toast/toast'
+  import Select from './vue-select/Select'
   import msgBox from './msgBox/msgBox'
-  import icon from './icon/icon'
+  import toast from './toast/toast'
   import popup from './popup/popup'
-  import list from './list/list'
+  import icon from './icon/icon'
+  import grid from './grid/grid'
   export default{
     name: 'index',
     components: {
@@ -49,9 +67,7 @@
       msgBox,
       popup,
       toast,
-      icon,
       grid,
-      list,
     },
     data(){
       return {
@@ -158,18 +174,18 @@
     },
     methods: {
       switchBubble(){
-        if(this.isShowBubble){
+        if (this.isShowBubble) {
           this.closeBubble()
-        }else{
+        } else {
           this.openBubble()
         }
         this.isShowBubble = !this.isShowBubble
       },
       switchSelect(){
         this.result = this.s1Data
-        if(!this.isShowSelect && this.resFlag){
+        if (!this.isShowSelect && this.resFlag) {
           this.resFlag = true
-        }else{
+        } else {
           this.resFlag = !this.resFlag
         }
         this.isShowSelect = !this.isShowSelect
@@ -180,9 +196,9 @@
       switchMbSelect(){
         this.isShowSelect = false
         this.result = this.s2Data.hasOwnProperty('id')
-        if(!this.isShowMbSelect && this.resFlag){
+        if (!this.isShowMbSelect && this.resFlag) {
           this.resFlag = true
-        }else{
+        } else {
           this.resFlag = !this.resFlag
         }
         this.s2Data.hasOwnProperty('id') ? (this.resFlag = true) : (this.resFlag = false)
@@ -286,6 +302,59 @@
     }
   }
 
+  .item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    float: left;
+    width: 4rem;
+    height: 4rem;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid @borderColor;
+    margin-top: -1px;
+    margin-left: -1px;
+    .icon {
+      font-size: 3.5em;
+    }
+    & > p {
+      height: .6rem;
+      line-height: .6rem;
+      position: absolute;
+      bottom: .5rem;
+    }
+  }
+
+  .switch {
+    span {
+      display: block;
+      position: relative;
+      width: 1.5rem;
+      height: .75rem;
+      margin: 0 auto;
+      border-radius: .6rem;
+      background: @color;
+      transition: all .2s;
+      &.close {
+        background: @hoverBgColor;
+        i {
+          right: .75rem;
+        }
+      }
+      i {
+        position: absolute;
+        right: 0;
+        display: inline-block;
+        width: .75rem;
+        height: .75rem;
+        background: #fff;
+        border-radius: 50%;
+        transition: all .2s;
+      }
+    }
+  }
   
   .result-tb{
     li{
