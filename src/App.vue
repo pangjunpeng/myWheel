@@ -46,7 +46,7 @@ export default {
 
 <style scope type="text/less" lang="less">
   html{
-    background-color: #fafafa;
+    background-color: #f7f7f7;
   }
   html, body, #app{
     height: 100%;

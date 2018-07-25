@@ -3,19 +3,19 @@
     <div class="container">
       <div class="list clearfix">
         <div class="item" @click="switchMbSelect">
-          <grid name="mb-select" desc="移动端select效果"></grid>
+          <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
         <router-link class="item" to="/msgBox" tag="div">
-          <grid name="msg" desc="消息提示"></grid>
+          <grid name="msg" title="MsgBox" desc="消息提示"></grid>
         </router-link>
         <div class="item" @click="switchAct">
-          <grid name="actionsheet" desc="actionsheet"></grid>
+          <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
         <div class="item" @click="switchSelect">
-          <grid name="select" desc="带图片的select"></grid>
+          <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc"></grid>
         </div>
         <div class="item switch">
-          <grid desc="带图片的select">
+          <grid title="冒泡泡" desc="没事写的点击冒泡小插件">
             <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
           </grid>
         </div>
@@ -278,7 +278,7 @@
     height: 100%;
     .container{
       min-height: 100%;
-      padding: 2rem 1rem;
+      padding: 2rem .5rem;
       max-width: 520px;
       margin: 0 auto;
     }
@@ -303,30 +303,22 @@
   }
 
   .item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
     position: relative;
     float: left;
     width: 4rem;
-    height: 4rem;
-    padding: 1rem;
+    height: 4.8rem;
+    margin: .25rem;
+    padding-top: 1rem;
     text-align: center;
     border: 1px solid @borderColor;
-    margin-top: -1px;
-    margin-left: -1px;
-    .icon {
-      font-size: 3.5em;
-    }
-    & > p {
-      height: .6rem;
-      line-height: .6rem;
-      position: absolute;
-      bottom: .5rem;
-    }
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 3px 2px 10px 1px rgba(219, 219, 219, 0.91);
   }
-
   .switch {
     span {
       display: block;
