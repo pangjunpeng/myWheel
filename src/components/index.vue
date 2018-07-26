@@ -26,11 +26,31 @@
           @selectInfo="getSelectInfo"
           v-show="isShowSelect"
           class="mt"></v-select>
-        <actionsheet :opts="popupData" :isShow.sync="isShowAct" @handler="handlerAct"></actionsheet>
-        <my-select :lists="lists" :isShow.sync="isShowMbSelect" @result="getRes" @msg="getTips"></my-select>
-        <toast :isShowToast.sync="isShowToast" :msg="tipsMsg"></toast>
-        <msg-box :type="msgType" :isShow.sync="alertShow" :msg="msg" @result="getMsg"></msg-box>
-        <popup :isShow.sync="isShowPopup" :msg="popMsg" :time="showPopTime"></popup>
+        <actionsheet
+          :opts="popupData"
+          :isShow.sync="isShowAct"
+          @handler="handlerAct"
+        ></actionsheet>
+        <my-select
+          :lists="lists"
+          :isShow.sync="isShowMbSelect"
+          @result="getRes"
+          @msg="getTips"
+        ></my-select>
+        <toast
+          :isShowToast.sync="isShowToast"
+          :msg="tipsMsg"
+        ></toast>
+        <msg-box
+          :type="msgType"
+          :isShow.sync="alertShow"
+          :msg="msg"
+          @result="getMsg"
+        ></msg-box>
+        <popup
+          :isShow.sync="isShowPopup"
+          :msg="popMsg"
+          :time="showPopTime"></popup>
         <div v-show="resFlag" class="mt">
           获取到数据为
           <ul class="result-tb mt">

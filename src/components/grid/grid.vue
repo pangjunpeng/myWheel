@@ -3,7 +3,7 @@
     <div v-if="name">
       <icon :name="name" class="icon"></icon>
     </div>
-    <div v-else>
+    <div v-else class="slot-wrapper">
       <slot></slot>
     </div>
     <div class="desc">
@@ -36,7 +36,9 @@
   .icon{
     font-size: 3.5em;
   }
-
+  .slot-wrapper{
+    padding: 1em;
+  }
   .desc {
     /*position: absolute;*/
     /*left: 0;*/
