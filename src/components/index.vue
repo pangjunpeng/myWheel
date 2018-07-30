@@ -2,19 +2,19 @@
   <div class="wrapper">
     <div class="container">
       <div class="list clearfix">
-        <div class="item" @click="switchMbSelect">
+        <div class="item" @click="switchMbSelect" v-hover="hoverStyle">
           <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
-        <router-link class="item" to="/msgBox" tag="div">
+        <router-link class="item" to="/msgBox" tag="div" v-hover="hoverStyle">
           <grid name="msg" title="MsgBox" desc="消息提示"></grid>
         </router-link>
-        <div class="item" @click="switchAct">
+        <div class="item" @click="switchAct" v-hover="hoverStyle">
           <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
-        <div class="item" @click="switchSelect">
+        <div class="item" @click="switchSelect" v-hover="hoverStyle">
           <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc"></grid>
         </div>
-        <div class="item switch">
+        <div class="item switch" v-hover="hoverStyle">
           <grid title="冒泡泡" desc="没事写的点击冒泡小插件">
             <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
           </grid>
@@ -108,6 +108,15 @@
         msg: '说点什么呢',
         popMsg: '',
         showPopTime: 0,
+        hoverStyle: {
+          normal: {
+            'box-shadow': '1px 1px 10px 1px rgba(219, 219, 219, 0.91);'
+          },
+          hover: {
+            'background-color': '#fafafa;',
+            'box-shadow': '5px 5px 10px 1px rgba(219, 219, 219, 0.91);'
+          }
+        },
         bankLists: [
           {
           'branchId'  : '48484848448',
@@ -189,7 +198,31 @@
         return this.bankLists
       },
       isPc(){
-        return navigator.userAgent.match('Mobile')
+        return !navigator.userAgent.match('Mobile')
+      }
+    },
+    directives: {
+      hover: {
+        inserted(el, binding, vnode){
+          let self = vnode.context
+          if(self.isPc){
+            if (el.className.indexOf('v-hover-enable') === -1) {
+              el.className += ' v-hover-enable '
+            }
+          }else{
+            let normal = JSON.stringify(binding.value.normal).replace(/(^\{)|(\}$)|\"|\,/g, '')
+            let hover = JSON.stringify(binding.value.hover).replace(/(^\{)|(\}$)|\"|\,/g, '')
+  
+            let style = document.createElement('style')
+            style.innerText =
+              el.ontouchstart = function(){
+              this.style.cssText = hover
+            }
+            el.ontouchend = function(){
+              this.style.cssText = normal
+            }
+          }
+        }
       }
     },
     methods: {
@@ -278,19 +311,16 @@
     },
     mounted(){
       if(this.isPc){
-        this.popMsg = '快速点击左下角5次可调出vconsole哦~'
-        this.showPopTime = 3
-        this.isShowPopup = true
-      }else{
         this.toast('手机访问效果更佳哦~')
         console.log('欢迎欢迎~')
         console.log("%c", "padding:50px;background:url('https://upload-images.jianshu.io/upload_images/11264410-e6f607b0d522c693.gif');background-size:auto 100%;");
+      }else{
+        this.popMsg = '快速点击左下角5次可调出vconsole哦~'
+        this.showPopTime = 3
+        this.isShowPopup = true
       }
       
     },
-    activated(){
-      console.log('index activated')
-    }
   }
 </script>
 <style scoped type="text/less" lang="less">
@@ -337,7 +367,14 @@
     border: 1px solid @borderColor;
     border-radius: 8px;
     background-color: #fff;
-    box-shadow: 3px 2px 10px 1px rgba(219, 219, 219, 0.91);
+    transition: all .2s;
+  }
+  .v-hover-enable{
+    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
+    &:hover {
+      background-color: #fafafa;
+      box-shadow: 5px 5px 10px 1px rgba(219, 219, 219, 0.91);
+    }
   }
   .switch {
     span {
