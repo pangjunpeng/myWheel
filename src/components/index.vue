@@ -2,19 +2,19 @@
   <div class="wrapper">
     <div class="container">
       <div class="list clearfix">
-        <div class="item" @click="switchMbSelect" v-hover="hoverStyle">
+        <div class="item" @click="switchMbSelect" v-hover="hoverClass">
           <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
-        <router-link class="item" to="/msgBox" tag="div" v-hover="hoverStyle">
+        <router-link class="item" to="/msgBox" tag="div" v-hover="hoverClass">
           <grid name="msg" title="MsgBox" desc="消息提示"></grid>
         </router-link>
-        <div class="item" @click="switchAct" v-hover="hoverStyle">
+        <div class="item" @click="switchAct" v-hover="hoverClass">
           <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
-        <div class="item" @click="switchSelect" v-hover="hoverStyle">
+        <div class="item" @click="switchSelect" v-hover="hoverClass">
           <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc"></grid>
         </div>
-        <div class="item switch" v-hover="hoverStyle">
+        <div class="item switch" v-hover="hoverClass">
           <grid title="冒泡泡" desc="没事写的点击冒泡小插件">
             <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
           </grid>
@@ -108,15 +108,7 @@
         msg: '说点什么呢',
         popMsg: '',
         showPopTime: 0,
-        hoverStyle: {
-          normal: {
-            'box-shadow': '1px 1px 10px 1px rgba(219, 219, 219, 0.91);'
-          },
-          hover: {
-            'background-color': '#fafafa;',
-            'box-shadow': '5px 5px 10px 1px rgba(219, 219, 219, 0.91);'
-          }
-        },
+        hoverClass: 'v-hover-hover',
         bankLists: [
           {
           'branchId'  : '48484848448',
@@ -210,16 +202,18 @@
               el.className += ' v-hover-enable '
             }
           }else{
-            let normal = JSON.stringify(binding.value.normal).replace(/(^\{)|(\}$)|\"|\,/g, '')
-            let hover = JSON.stringify(binding.value.hover).replace(/(^\{)|(\}$)|\"|\,/g, '')
-  
-            let style = document.createElement('style')
-            style.innerText =
-              el.ontouchstart = function(){
-              this.style.cssText = hover
+            let hClass = binding.value
+
+            el.ontouchstart = e => {
+              el.addClass(hClass)
+              setTimeout(function(){
+                el.removeClass(hClass)
+              }, 1000)
             }
-            el.ontouchend = function(){
-              this.style.cssText = normal
+            el.ontouchend = () => {
+              setTimeout(function () {
+                el.removeClass(hClass)
+              }, 200)
             }
           }
         }
@@ -308,6 +302,20 @@
           }, 3000)
         })
       this.mouse = new MouseBubble()
+      HTMLElement.prototype.addClass = function(cName){
+        let aCName = cName.split(' ').filter(item => {
+          return item
+        })
+        aCName.forEach(item => {
+          if(this.className.indexOf(item) === -1){
+            this.className += ` ${item} `
+          }
+        })
+      }
+      HTMLElement.prototype.removeClass = function(cName){
+        let reg = new RegExp('\\b' + cName + '\\b ', 'g')
+        this.className = this.className.replace(reg, '')
+      }
     },
     mounted(){
       if(this.isPc){
@@ -367,6 +375,7 @@
     border: 1px solid @borderColor;
     border-radius: 8px;
     background-color: #fff;
+    cursor: pointer;
     transition: all .2s;
   }
   .v-hover-enable{
@@ -427,5 +436,12 @@
   }
   .mt{
     margin-top: .5rem;
+  }
+  .v-hover-normal{
+    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
+  }
+  .v-hover-hover{
+    background-color: #fafafa;
+    box-shadow: 5px 5px 10px 1px rgba(219, 219, 219, 0.91);
   }
 </style>
