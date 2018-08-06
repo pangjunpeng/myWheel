@@ -142,7 +142,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(@borderColor, transparent, @borderColor);
+        background: linear-gradient(to bottom, rgba(204, 204, 204, .5) 0%, rgba(255, 255, 255, 0) 50%, rgba(204, 204, 204, .5) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#80000000', GradientType=0); /* IE6-9 */
         &::before, &::after{
           content: '';
           display: block;

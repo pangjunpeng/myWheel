@@ -11,9 +11,9 @@
         <i class="iconfont icon-contact"></i>
       </div>
     </div>
-    <transition :name="routeSwitch">
+    <transition :name="transitionName">
         <keep-alive>
-          <router-view/>
+          <router-view class="child-view"/>
         </keep-alive>
       </transition>
   </div>
@@ -24,23 +24,30 @@ export default {
   name: 'App',
   data(){
     return {
-      routeSwitch: 'slide-next'
+      routeSwitch: 'slide-next',
+      transitionName: ''
     }
   },
   computed: {
     isShowBack(){
       return this.$route.path !== '/'
+    },
+  },
+  methods: {
+    countDepth(s){
+      if(s === '/'){
+        return 1
+      }
+      return s.split('/').length
     }
   },
   watch: {
-    '$route'(to, from){
-      if(to.name === 'Index'){
-        this.routeSwitch = 'slide-pre'
-      }else{
-        this.routeSwitch = 'slide-next'
-      }
+    '$route' (to, from) {
+      const toDepth = this.countDepth(to.path)
+      const fromDepth = this.countDepth(from.path)
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
     }
-  }
+  },
 }
 </script>
 
@@ -95,23 +102,22 @@ export default {
   .v-enter-active, .v-leave-active{
     transition: opacity .2s;
   }
-  .slide-next, .slide-pre {
+
+
+  .child-view {
     position: absolute;
-    left: 0;
-    right: 0;
+    transition: all .5s;
   }
 
-  .slide-next-enter-active, .slide-pre-enter-active, .slide-next-leave-active, .slide-pre-leave-active {
-    transition: all .8s ease;
-  }
-
-  .slide-next-enter, .slide-pre-leave {
-    transform: translateX(50px);
+  .slide-left-enter, .slide-right-leave-active {
     opacity: 0;
+    -webkit-transform: translate(30px, 0);
+    transform: translate(30px, 0);
   }
 
-  .slide-pre-enter, .slide-next-leave {
-    transform: translateX(-50px);
+  .slide-left-leave-active, .slide-right-enter {
     opacity: 0;
+    -webkit-transform: translate(-30px, 0);
+    transform: translate(-30px, 0);
   }
 </style>

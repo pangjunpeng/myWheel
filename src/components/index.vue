@@ -12,7 +12,7 @@
           <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
         <div class="item" @click="switchSelect" v-hover="hoverClass">
-          <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc"></grid>
+          <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc(下方展示)"></grid>
         </div>
         <div class="item switch" v-hover="hoverClass">
           <grid title="冒泡泡" desc="没事写的点击冒泡小插件">

@@ -12,7 +12,7 @@ Vue.prototype.$ajax = axios
 change()
 let timer
 window.onresize = function(){
-  clearTimeout(timer)
+  timer && clearTimeout(timer)
   timer = setTimeout(change, 200)
 }
 function change(){
