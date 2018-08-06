@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="noData" v-if="hasData">
+      <div class="noData" v-if="!hasData">
         <loading class="loading"></loading>
         正在获取数据
       </div>
