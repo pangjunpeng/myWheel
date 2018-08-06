@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/index'
 import msgBox from '@/components/msgBox'
+import cityList from '@/components/cityList'
 
 Vue.use(Router)
 
@@ -16,11 +17,19 @@ export default new Router({
       }
     },
     {
-      path: '/msgBox',
-      name: 'msgBox',
+      path     : '/msgBox',
+      name     : 'msgBox',
       component: msgBox,
-      meta: {
+      meta     : {
         title: '消息提示',
+      }
+    },
+    {
+      path     : '/city',
+      name     : 'cityList',
+      component: cityList,
+      meta     : {
+        title: '城市选择',
       }
     },
     {

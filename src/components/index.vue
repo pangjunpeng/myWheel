@@ -5,6 +5,9 @@
         <div class="item" @click="switchMbSelect" v-hover="hoverClass">
           <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
+        <router-link class="item" to="/city" tag="div" v-hover="hoverClass">
+          <grid name="city-list" title="CityList" desc="城市选择组件<br>当前: 请选择"></grid>
+        </router-link>
         <router-link class="item" to="/msgBox" tag="div" v-hover="hoverClass">
           <grid name="msg" title="MsgBox" desc="消息提示"></grid>
         </router-link>
@@ -297,9 +300,7 @@
     created(){
       this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
         .then(res => {
-          setTimeout(_=>{
-            this.lists = res.data
-          }, 3000)
+          this.lists = res.data
         })
       this.mouse = new MouseBubble()
       HTMLElement.prototype.addClass = function(cName){
