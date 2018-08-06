@@ -6,8 +6,8 @@
       </div>
     </div>
     <div class="content">
-      <div class="noData" v-if="!hasData">
-        <i class="iconfont icon-loading rotate"></i>
+      <div class="noData" v-if="hasData">
+        <loading class="loading"></loading>
         正在获取数据
       </div>
       <div class="hot-city" v-else>
@@ -22,8 +22,12 @@
   </div>
 </template>
 <script>
+  import loading from '@/components/loading'
   export default{
     name: 'cityList',
+    components: {
+      loading
+    },
     data(){
       return {
         filter: '',
@@ -103,11 +107,10 @@
         align-items: center;
         padding: .4rem;
         text-align: center;
-        .rotate{
-          font-size: .8em;
-          margin-right: .2rem;
-          transform-origin: center center;
-          animation: rotate 2s linear infinite;
+        .loading{
+          width: .2rem;
+          height: .2rem;
+          margin-right: .4rem;
         }
       }
       .hot-city{
