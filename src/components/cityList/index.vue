@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="noData" v-if="!hasData">
+      <div class="noData" v-if="hasData">
         <loading class="loading"></loading>
         正在获取数据
       </div>
@@ -75,6 +75,7 @@
 </script>
 <style scoped type="text/less" lang="less">
   .container{
+    width: 100%;
     padding-top: 50px;
     .fixed-wrapper{
       width: 100%;
@@ -108,8 +109,8 @@
         padding: .4rem;
         text-align: center;
         .loading{
-          width: .2rem;
-          height: .2rem;
+          width: 10px;
+          height: 10px;
           margin-right: .4rem;
         }
       }

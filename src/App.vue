@@ -105,6 +105,7 @@ export default {
 
 
   .child-view {
+    position: absolute;
     transition: all .5s;
   }
 

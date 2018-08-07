@@ -24,7 +24,7 @@
       display: inline-block;
       width: 50%;
       height: 50%;
-      background: @bgcolor;
+      background: #888;
       transform-origin: center center;
       &:first-child{
         animation: top 1.2s infinite linear;
@@ -45,7 +45,7 @@
       transform: translateY(0) rotate(0deg);
     }
     50%{
-      transform: translate(-50%, -50%) rotate(90deg);
+      transform: translate(-60%, -60%) rotate(90deg);
     }
     100%{
       transform: translateY(0) rotate(180deg);
@@ -57,7 +57,7 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translate(50%, 50%) rotate(90deg);
+      transform: translate(60%, 60%) rotate(90deg);
     }
     100% {
       transform: translateY(0) rotate(180deg);
@@ -69,7 +69,7 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translate(-50%, 50%) rotate(90deg);
+      transform: translate(-60%, 60%) rotate(90deg);
     }
     100% {
       transform: translateY(0) rotate(180deg);
@@ -81,7 +81,7 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translate(50%, -50%) rotate(90deg);
+      transform: translate(60%, -60%) rotate(90deg);
     }
     100% {
       transform: translateY(0) rotate(180deg);
