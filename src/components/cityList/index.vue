@@ -83,7 +83,6 @@
         filter: '',
         hasData: false,
         cityList: [],
-        city: {},
         curCity: '',
         geoErr: '',
         isFixed: false
@@ -125,7 +124,11 @@
       // 获取数据
       this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/city#!method=get')
         .then(res => {
-          res.status === 200 && res.data.ret && (this.hasData = true, this.cityList = res.data.data)
+          if(res.status === 200 && res.data.ret){
+            this.hasData = true
+            this.cityList = res.data.data
+            
+          }
         })
         .then(() => {
           // 取到数据后获取位置
