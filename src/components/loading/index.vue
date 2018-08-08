@@ -24,7 +24,7 @@
       display: inline-block;
       width: 50%;
       height: 50%;
-      background: #888;
+      background: #868686;
       transform-origin: center center;
       &:first-child{
         animation: top 1.2s infinite linear;

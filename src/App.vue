@@ -7,7 +7,7 @@
         </router-link>
       </transition>
       <div class="header-title">{{this.$route.meta.title}}</div>
-      <div class="header-logo">
+      <div class="header-logo" @click="showConcat">
         <i class="iconfont icon-contact"></i>
       </div>
     </div>
@@ -39,6 +39,9 @@ export default {
         return 1
       }
       return s.split('/').length
+    },
+    showConcat(){
+      alert('马上添加')
     }
   },
   watch: {

@@ -82,8 +82,13 @@
       }
     },
     updated(){
-      this.hasData && this.render()
+      if(this.$route.path === '/' && this.hasData){
+        this.render()
+      }
     },
+    activated(){
+      this.hasData && this.render()
+    }
   }
 </script>
 <style scoped type="text/less" lang="less">

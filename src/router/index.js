@@ -6,13 +6,13 @@ import cityList from '@/components/cityList'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
-      path: '/',
-      name: 'Index',
+      path     : '/',
+      name     : 'Index',
       component: Index,
-      meta: {
+      meta     : {
         title: '首页',
       }
     },
@@ -33,8 +33,10 @@ export default new Router({
       }
     },
     {
-      path: '*',
+      path    : '*',
       redirect: '/'
     }
-  ]
+  ],
 })
+
+export default router

@@ -6,7 +6,7 @@
           <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
         <router-link class="item" to="/city" tag="div" v-hover="hoverClass">
-          <grid name="city-list" title="CityList" desc="城市选择组件<br>当前: 请选择"></grid>
+          <grid name="city-list" title="CityList" :desc="`城市选择组件<br>当前: <strong>${city}</strong>`"></grid>
         </router-link>
         <router-link class="item" to="/msgBox" tag="div" v-hover="hoverClass">
           <grid name="msg" title="MsgBox" desc="消息提示"></grid>
@@ -81,6 +81,7 @@
   import popup from './popup/popup'
   import icon from './icon/icon'
   import grid from './grid/grid'
+  import Bus from '../Bus/bus'
   export default{
     name: 'index',
     components: {
@@ -97,6 +98,7 @@
         result: undefined,
         resFlag: false,
         mouse: null,
+        city: '请选择',
         isShowBubble: true,
         isShowSelect: false,
         isShowAct: false,
@@ -194,7 +196,7 @@
       },
       isPc(){
         return !navigator.userAgent.match('Mobile')
-      }
+      },
     },
     directives: {
       hover: {
@@ -298,11 +300,16 @@
       }
     },
     created(){
+      // 获取select数据
       this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
         .then(res => {
           this.lists = res.data
         })
+      
+      // 冒泡泡
       this.mouse = new MouseBubble()
+      
+      // 挂载共用方法到dom
       HTMLElement.prototype.addClass = function(cName){
         let aCName = cName.split(' ').filter(item => {
           return item
@@ -317,6 +324,9 @@
         let reg = new RegExp('\\b' + cName + '\\b ', 'g')
         this.className = this.className.replace(reg, '')
       }
+      
+      // 获取城市
+      localStorage.city && (this.city = JSON.parse(localStorage.city).name)
     },
     mounted(){
       if(this.isPc){
@@ -328,7 +338,10 @@
         this.showPopTime = 3
         this.isShowPopup = true
       }
-      
+      Bus.$on('changeCity', data => {
+        this.city = data.name
+        localStorage.city = JSON.stringify(data)
+      })
     },
   }
 </script>
