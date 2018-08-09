@@ -12,10 +12,9 @@
         </transition>
         <transition name="too-too-long">
           <div v-show="tooTooLong" class="long-long-tips">
-            买买买，服务器一定买，要不您先刷新一下
+            买买买，服务器一定买，要不您先喝口水站起来活动活动
           </div>
         </transition>
-        
       </div>
       <div class="city-box" v-else>
         <div class="fixed-wrapper">
@@ -23,47 +22,60 @@
             <input type="text" placeholder="请输入关键字" v-model="filter">
           </div>
         </div>
-        <div class="pos-wrapper">
-          <h3 class="title">当前城市</h3>
-          <div v-if="!curCity && !geoErr" class="cur-pos-pending">
-            <loading class="loading"></loading>
-            正在获取位置
-          </div>
-          <div v-else class="cur-pos-end">
-            <div class="no-city" v-if="geoErr">
-              {{geoErr}}
+        <div v-show="!filter">
+          <div class="pos-wrapper">
+            <h3 class="title">当前城市</h3>
+            <div v-if="!curCity && !geoErr" class="cur-pos-pending">
+              <loading class="loading"></loading>
+              正在获取位置
             </div>
-            <div class="cur-city-wrapper" v-else>
-              <div class="cur-city">
-                <span class="cur-item" @click="pickCity(curCity)">{{curCity}}</span>
+            <div v-else class="cur-pos-end">
+              <div class="no-city" v-if="geoErr">
+                {{geoErr}}
+              </div>
+              <div class="cur-city-wrapper" v-else>
+                <div class="cur-city">
+                  <span class="cur-item" @click="pickCity(curCity)">{{curCity.name}}</span>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+          <div class="hot-wrapper">
+            <h3 class="title">热门城市</h3>
+            <div class="hot-cities">
+              <div v-for="item in cityList.hotCities" :key="item.id" class="hot-city">
+                <span class="hot-item" @click="pickCity(item)">{{item.name}}</span>
               </div>
             </div>
           </div>
-          
-        </div>
-        <div class="hot-wrapper">
-          <h3 class="title">热门城市</h3>
-          <div class="hot-cities">
-            <div v-for="item in cityList.hotCities" :key="item.id" class="hot-city">
-              <span class="hot-item" @click="pickCity(item)">{{item.name}}</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="cities-wrapper">
-          <div v-for="(value, key) in cityList.cities">
-            <div class="title">
-              {{key}}
-            </div>
-            <div class="item-cities">
-              <div class="city-item" v-for="item in value" :key="item.id" @click="pickCity(item)">
-                {{item.name}}
+          <div class="cities-wrapper">
+            <div v-for="(value, key) in cityList.cities">
+              <div class="title">
+                {{key}}
+              </div>
+              <div class="item-cities">
+                <div class="city-item" v-for="item in value" :key="item.id" @click="pickCity(item)">
+                  {{item.name}}
+                </div>
               </div>
             </div>
+  
           </div>
-          
         </div>
-        
+        <div class="filter-wrapper" v-show="filter">
+          <h3 class="title">搜索结果</h3>
+          <div class="item-cities">
+            <div v-for="item in filterCities" :key="item.id" class="city-item" @click="pickCity(item)">
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <div class="side-nav">
+          <div v-for="item in sideNavList" class="side-item">
+            {{item}}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -78,6 +90,7 @@
     },
     data(){
       return {
+        isFixed: false,
         tooLong: false,
         tooTooLong: false,
         filter: '',
@@ -85,7 +98,22 @@
         cityList: [],
         curCity: '',
         geoErr: '',
-        isFixed: false
+        sideNavList: []
+      }
+    },
+    computed: {
+      filterCities(){
+        let cityList = this.cityList.cities,
+            filter = this.filter
+        let resArr = []
+        for(let i in cityList){
+          for(let j=0; j<cityList[i].length; j++){
+            if(cityList[i][j].name.match(filter) || cityList[i][j].spell.match(filter)){
+              resArr.push(cityList[i][j])
+            }
+          }
+        }
+        return resArr
       }
     },
     methods: {
@@ -102,25 +130,11 @@
         }
       },
       pickCity(city){
-        if(city === this.curCity){
-          city = {
-            id: 0,
-            name: city,
-            spell: '???'
-          }
-        }
         Bus.$emit('changeCity', city)
         this.$router.back()
-      }
+      },
     },
     created(){
-      // 超时提示
-      setTimeout(() => {
-        this.tooLong = true
-      }, 5000)
-      setTimeout(() => {
-        this.tooTooLong = true
-      }, 15000)
       // 获取数据
       this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/city#!method=get')
         .then(res => {
@@ -148,7 +162,14 @@
               8: '获取位置超时',
             }
             if (this.getStatus() === BMAP_STATUS_SUCCESS) {
-              vm.curCity = res.address.city.replace('市', '')
+              let cityList = vm.cityList.cities
+              for (let i in cityList) {
+                for (let j = 0; j < cityList[i].length; j++) {
+                  if (cityList[i][j].name.match(res.address.city.replace('市', ''))) {
+                    vm.curCity = cityList[i][j]
+                  }
+                }
+              }
             } else {
               if (this.getStatus() === BMAP_STATUS_TIMEOUT) {
                 vm.geoErr = ERR[this.getStatus()]
@@ -157,21 +178,36 @@
               }
             }
           });
+          
+          // 整理侧边栏
+          let cityList = this.cityList.cities
+          if(this.cityList.hotCities && this.cityList.hotCities.length){
+            this.sideNavList.push('★')
+          }
+          for (let i in cityList){
+            this.sideNavList.push(i)
+          }
       })
+      
+      // 超时提示
+      setTimeout(() => {
+        this.tooLong = true
+      }, 5000)
+      setTimeout(() => {
+        this.tooTooLong = true
+      }, 15000)
     },
     mounted(){
       localStorage.curCity && (this.curCity = localStorage.curCity)
     },
-    beforeRouteEnter (to, from, next){
-      next(vm => {
-        window.onscroll = vm.throttle(() => {
-          let top = document.documentElement.scrollTop || document.body.scrollTop
-          vm.isFixed = !!top
-        }, 16)
-      })
-      
+    activated(){
+      window.onscroll = this.throttle(() => {
+        let top = document.documentElement.scrollTop || document.body.scrollTop
+        this.isFixed = !!top
+      }, 1)
     },
     beforeRouteLeave (to, from, next){
+      this.filter && (this.filter = '')
       window.onscroll = null
       next()
     }
@@ -180,7 +216,7 @@
 <style scoped type="text/less" lang="less">
   @padding: .4rem;
   .container{
-    padding-top: 50px;
+    padding-top: @header;
     
     .content{
       max-width: 520px;
@@ -204,7 +240,7 @@
         }
         .fixed {
           position: fixed;
-          top: 50px;
+          top: @header;
           left: 0;
           width: 100%;
         }
@@ -259,7 +295,7 @@
         display: flex;
         width: 100%;
         flex-wrap: wrap;
-        padding: .2rem 0;
+        padding: .2rem .6rem .2rem 0;
         background-color: #fff;
         .hot-city, .cur-city{
           flex-basis: 33.333%;
@@ -284,6 +320,16 @@
           &:last-child{
             border: none;
           }
+        }
+      }
+      .side-nav{
+        position: fixed;
+        right: 0;
+        top: 50%;
+        transform: translateY(-44%);
+        .side-item{
+          margin: .1rem;
+          text-align: center;
         }
       }
     }

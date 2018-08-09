@@ -25,9 +25,9 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+    height: @header;
     z-index: 99999;
-    line-height: 50px;
+    line-height: @header;
     text-align: center;
     color: @colorWhite;
     background-color: @bgcolor;

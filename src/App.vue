@@ -69,21 +69,21 @@ export default {
       left: 0;
       z-index: 999;
       width: 100%;
-      height: 50px;
+      height: @header;
       border-bottom: 1px solid @borderColor;
       background-color: #fff;
       .header-title{
-        height: 50px;
-        line-height: 50px;
+        height: @header;
+        line-height: @header;
         text-align: center;
         font-size: 1.3em;
       }
       .header-back, .header-logo{
         position: absolute;
         top: 0;
-        width: 50px;
+        width: @header;
         height: 100%;
-        line-height: 50px;
+        line-height: @header;
         text-align: center;
         i{
           font-size: 1.3em;
