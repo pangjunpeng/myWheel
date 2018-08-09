@@ -127,8 +127,9 @@
           if(res.status === 200 && res.data.ret){
             this.hasData = true
             this.cityList = res.data.data
-            
           }
+        }, err => {
+          console.log(err)
         })
         .then(() => {
           // 取到数据后获取位置
@@ -179,10 +180,11 @@
 <style scoped type="text/less" lang="less">
   @padding: .4rem;
   .container{
-    width: 100%;
     padding-top: 50px;
     
     .content{
+      max-width: 520px;
+      margin: 0 auto;
       .fixed-wrapper {
         width: 100%;
         height: 1.2rem;

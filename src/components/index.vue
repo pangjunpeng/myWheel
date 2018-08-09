@@ -274,8 +274,8 @@
         this.s1Data = data
         this.result = this.s1Data
       },
-      handlerAct(data){
-        data.call(this)
+      handlerAct(fn){
+        fn.call(this)
       },
       toast(msg){
         this.isShowToast = true
@@ -347,10 +347,9 @@
 </script>
 <style scoped type="text/less" lang="less">
   .wrapper{
-    width: 100%;
     height: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    /*left: 50%;*/
+    /*transform: translateX(-50%);*/
     .container{
       min-height: 100%;
       padding: 2rem .5rem;
