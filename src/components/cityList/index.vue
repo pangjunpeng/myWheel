@@ -22,48 +22,51 @@
             <input type="text" placeholder="请输入关键字" v-model="filter">
           </div>
         </div>
-        <div v-show="!filter">
-          <div class="pos-wrapper">
-            <h3 class="title">当前城市</h3>
-            <div v-if="!curCity && !geoErr" class="cur-pos-pending">
-              <loading class="loading"></loading>
-              正在获取位置
-            </div>
-            <div v-else class="cur-pos-end">
-              <div class="no-city" v-if="geoErr">
-                {{geoErr}}
+        <div v-show="!filter" class="cities-container" ref="cities">
+          <div>
+            <div class="pos-wrapper">
+              <h3 class="title">当前城市</h3>
+              <div v-if="!curCity && !geoErr" class="cur-pos-pending">
+                <loading class="loading"></loading>
+                正在获取位置
               </div>
-              <div class="cur-city-wrapper" v-else>
-                <div class="cur-city">
-                  <span class="cur-item" @click="pickCity(curCity)">{{curCity.name}}</span>
+              <div v-else class="cur-pos-end">
+                <div class="no-city" v-if="geoErr">
+                  {{geoErr}}
+                </div>
+                <div class="cur-city-wrapper" v-else>
+                  <div class="cur-city">
+                    <span class="cur-item" @click="pickCity(curCity)">{{curCity.name}}</span>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+            <div class="hot-wrapper">
+              <h3 class="title" id="hot">热门城市</h3>
+              <div class="hot-cities">
+                <div v-for="item in cityList.hotCities" :key="item.id" class="hot-city">
+                  <span class="hot-item" @click="pickCity(item)">{{item.name}}</span>
                 </div>
               </div>
             </div>
-  
-          </div>
-          <div class="hot-wrapper">
-            <h3 class="title">热门城市</h3>
-            <div class="hot-cities">
-              <div v-for="item in cityList.hotCities" :key="item.id" class="hot-city">
-                <span class="hot-item" @click="pickCity(item)">{{item.name}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="cities-wrapper">
-            <div v-for="(value, key) in cityList.cities">
-              <div class="title">
-                {{key}}
-              </div>
-              <div class="item-cities">
-                <div class="city-item" v-for="item in value" :key="item.id" @click="pickCity(item)">
-                  {{item.name}}
+            <div class="cities-wrapper">
+              <div v-for="(value, key) in cityList.cities">
+                <div class="title" :id="key">
+                  {{key}}
+                </div>
+                <div class="item-cities">
+                  <div class="city-item" v-for="item in value" :key="item.id" @click="pickCity(item)">
+                    {{item.name}}
+                  </div>
                 </div>
               </div>
-            </div>
   
+            </div>
           </div>
+          
         </div>
-        <div class="filter-wrapper" v-show="filter">
+        <div v-show="filter" class="filter-wrapper">
           <h3 class="title">搜索结果</h3>
           <div class="item-cities">
             <div v-for="item in filterCities" :key="item.id" class="city-item" @click="pickCity(item)">
@@ -71,9 +74,9 @@
             </div>
           </div>
         </div>
-        <div class="side-nav">
-          <div v-for="item in sideNavList" class="side-item">
-            {{item}}
+        <div class="side-nav" ref="sideNav">
+          <div v-for="item in sideNavList" class="side-item" :target="item.value">
+            {{item.show}}
           </div>
         </div>
       </div>
@@ -83,6 +86,7 @@
 <script>
   import loading from '@/components/loading'
   import Bus from '../../Bus/bus'
+  import BScroll from 'better-scroll'
   export default{
     name: 'cityList',
     components: {
@@ -114,7 +118,10 @@
           }
         }
         return resArr
-      }
+      },
+      docHeight(){
+        return document.documentElement.clientHeight || document.body.clientHeight
+      },
     },
     methods: {
       throttle(fn, time){
@@ -133,6 +140,16 @@
         Bus.$emit('changeCity', city)
         this.$router.back()
       },
+      getStyle(el, attr){
+        if (el.style[attr]) {
+          return el.style[attr]
+        }
+        if (window.getComputedStyle) {
+          return getComputedStyle(el, false)[attr]
+        } else {
+          return el.currentStyle[attr]
+        }
+      }
     },
     created(){
       // 获取数据
@@ -150,6 +167,11 @@
           let vm = this
           const geo = new BMap.Geolocation()
           geo.getCurrentPosition(function (res) {
+            // 用户拒绝了，并且不是电脑，才显示获取失败
+            if(res.accuracy === null && !navigator.platform.match('Win') && !navigator.platform.match('Mac')){
+              vm.geoErr = '获取位置失败'
+              return false
+            }
             const ERR = {
               0: '检索成功',
               1: '城市列表',
@@ -171,6 +193,7 @@
                 }
               }
             } else {
+              // 应该不可能走到这来
               if (this.getStatus() === BMAP_STATUS_TIMEOUT) {
                 vm.geoErr = ERR[this.getStatus()]
               } else {
@@ -182,10 +205,16 @@
           // 整理侧边栏
           let cityList = this.cityList.cities
           if(this.cityList.hotCities && this.cityList.hotCities.length){
-            this.sideNavList.push('★')
+            this.sideNavList.push({
+              show: '★',
+              value: 'hot'
+            })
           }
           for (let i in cityList){
-            this.sideNavList.push(i)
+            this.sideNavList.push({
+              show: i,
+              value: i
+            })
           }
       })
       
@@ -200,8 +229,25 @@
     mounted(){
       localStorage.curCity && (this.curCity = localStorage.curCity)
     },
+    updated(){
+      if(this.curCity || this.geoErr){
+        let bscroll = new BScroll(this.$refs.cities, {
+          bounce: {
+            top: false
+          },
+          click: true
+        })
+        let top = (this.docHeight - this.getStyle(this.$refs.sideNav, 'height').replace('px', '')) / 2
+        console.log(top);
+        this.$refs.sideNav.ontouchmove = (e) => {
+          console.log(e)
+          // todo
+        }
+      }
+    },
     activated(){
       window.onscroll = this.throttle(() => {
+        console.log('window scroll');
         let top = document.documentElement.scrollTop || document.body.scrollTop
         this.isFixed = !!top
       }, 1)
@@ -216,8 +262,10 @@
 <style scoped type="text/less" lang="less">
   @padding: .4rem;
   .container{
-    padding-top: @header;
-    
+    top: @header;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     .content{
       max-width: 520px;
       margin: 0 auto;
@@ -244,6 +292,14 @@
           left: 0;
           width: 100%;
         }
+      }
+      .cities-container{
+        position: absolute;
+        top: 1.2rem;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
       }
       .pos-wrapper{
         .cur-pos-pending {
@@ -327,8 +383,9 @@
         right: 0;
         top: 50%;
         transform: translateY(-44%);
+        padding-right: .2rem;
         .side-item{
-          margin: .1rem;
+          padding: .05rem;
           text-align: center;
         }
       }
