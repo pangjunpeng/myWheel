@@ -163,60 +163,69 @@
           console.log(err)
         })
         .then(() => {
-          // 取到数据后获取位置
-          let vm = this
-          const geo = new BMap.Geolocation()
-          geo.getCurrentPosition(function (res) {
-            // 用户拒绝了，并且不是电脑，才显示获取失败
-            if(res.accuracy === null && !navigator.platform.match('Win') && !navigator.platform.match('Mac')){
-              vm.geoErr = '获取位置失败'
-              return false
-            }
-            const ERR = {
-              0: '检索成功',
-              1: '城市列表',
-              2: '位置结果未知',
-              3: '导航结果未知',
-              4: '非法密钥',
-              5: '非法请求',
-              6: '您已拒绝',
-              7: '服务不可用',
-              8: '获取位置超时',
-            }
-            if (this.getStatus() === BMAP_STATUS_SUCCESS) {
-              let cityList = vm.cityList.cities
-              for (let i in cityList) {
-                for (let j = 0; j < cityList[i].length; j++) {
-                  if (cityList[i][j].name.match(res.address.city.replace('市', ''))) {
-                    vm.curCity = cityList[i][j]
-                  }
-                }
-              }
-            } else {
-              // 应该不可能走到这来
-              if (this.getStatus() === BMAP_STATUS_TIMEOUT) {
-                vm.geoErr = ERR[this.getStatus()]
-              } else {
-                vm.geoErr = '获取位置失败'
-              }
-            }
-          });
-          
           // 整理侧边栏
           let cityList = this.cityList.cities
-          if(this.cityList.hotCities && this.cityList.hotCities.length){
+          if (this.cityList.hotCities && this.cityList.hotCities.length) {
             this.sideNavList.push({
-              show: '★',
+              show : '★',
               value: 'hot'
             })
           }
-          for (let i in cityList){
+          for (let i in cityList) {
             this.sideNavList.push({
-              show: i,
+              show : i,
               value: i
             })
           }
-      })
+        })
+        .then(() => {
+          // 取到数据后获取位置
+          let vm = this
+          try{
+            const geo = new BMap.Geolocation()
+            geo.getCurrentPosition(function (res) {
+              // 用户拒绝了，并且不是电脑，才显示获取失败
+              if (res.accuracy === null && !navigator.platform.match('Win') && !navigator.platform.match('Mac')) {
+                vm.geoErr = '获取位置失败'
+                return false
+              }
+              const ERR = {
+                0: '检索成功',
+                1: '城市列表',
+                2: '位置结果未知',
+                3: '导航结果未知',
+                4: '非法密钥',
+                5: '非法请求',
+                6: '您已拒绝',
+                7: '服务不可用',
+                8: '获取位置超时',
+              }
+              if (this.getStatus() === BMAP_STATUS_SUCCESS) {
+                let cityList = vm.cityList.cities
+                for (let i in cityList) {
+                  for (let j = 0; j < cityList[i].length; j++) {
+                    if (cityList[i][j].name.match(res.address.city.replace('市', ''))) {
+                      vm.curCity = cityList[i][j]
+                    }
+                  }
+                }
+              } else {
+                // 应该不可能走到这来
+                if (this.getStatus() === BMAP_STATUS_TIMEOUT) {
+                  vm.geoErr = ERR[this.getStatus()]
+                } else {
+                  vm.geoErr = '获取位置失败'
+                }
+              }
+            })
+          }catch(err){
+            this.geoErr = '获取位置失败'
+          }
+          
+        })
+        .catch(err => {
+//          console.log(err, 1);
+        })
       
       // 超时提示
       setTimeout(() => {
@@ -230,7 +239,7 @@
       localStorage.curCity && (this.curCity = localStorage.curCity)
     },
     updated(){
-      if(this.curCity || this.geoErr){
+      if(this.sideNavList.length && !this.curCity && !this.geoErr){
         let bscroll = new BScroll(this.$refs.cities, {
           bounce: {
             top: false
@@ -240,6 +249,7 @@
         let top = (this.docHeight - this.getStyle(this.$refs.sideNav, 'height').replace('px', '')) / 2
         console.log(top);
         this.$refs.sideNav.ontouchmove = (e) => {
+          e.preventDefault()
           console.log(e)
           // todo
         }
