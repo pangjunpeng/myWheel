@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <div class="cities-wrapper">
+            <div class="cities-wrapper" ref="cityList">
               <div v-for="(value, key) in cityList.cities">
                 <div class="title" :id="key">
                   {{key}}
@@ -74,10 +74,22 @@
             </div>
           </div>
         </div>
-        <div class="side-nav" ref="sideNav">
-          <div v-for="item in sideNavList" class="side-item" :target="item.value">
-            {{item.show}}
+        <div v-show="!filter" class="side-nav-wrapper">
+          <div class="side-nav">
+            <div
+              v-for="item in sideNavList"
+              class="side-item"
+              :data-target="item.value"
+              @click="handleLetterClick(item.value)"
+              @touchstart.prevent="handleTouchStart"
+              @touchmove="handleTouchMove"
+              @touchend="handleTouchEnd"
+              :ref="item.value"
+            >
+              {{item.show}}
+            </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -102,7 +114,10 @@
         cityList: [],
         curCity: '',
         geoErr: '',
-        sideNavList: []
+        sideNavList: [],
+        letter: '',
+        touchStatus: false,
+        startY: 0
       }
     },
     computed: {
@@ -122,13 +137,16 @@
       docHeight(){
         return document.documentElement.clientHeight || document.body.clientHeight
       },
+      rem(){
+        return document.getElementsByTagName('html')[0].style.fontSize.replace('px', '')
+      }
     },
     methods: {
       throttle(fn, time){
         let flag = false
-        return function(){
+        return function(...args){
           if(!flag){
-            fn.call()
+            fn.apply(null, args)
             flag = true
             setTimeout(() => {
               flag = false
@@ -149,6 +167,29 @@
         } else {
           return el.currentStyle[attr]
         }
+      },
+      handleLetterClick(el){
+        // 点击置顶
+        this.bscroll.scrollToElement(`#${el}`, 0)
+      },
+      handleTouchStart(){
+        this.touchStatus = true
+      },
+      handleTouchMove(e){
+        this.throttle(() => {
+          if (this.touchStatus) {
+            let touchY = e.touches[0].clientY - (this.rem * 2.56)
+            let disY = touchY - this.startY
+            let index = disY / (this.rem * 0.5) >> 0
+            index < 0 && (index = 0)
+            index > this.sideNavList.length - 1 && (index = this.sideNavList.length - 1)
+            this.bscroll.scrollToElement(`#${this.sideNavList[index].value}`, 0)
+          }
+        }, 16)(e)
+        
+      },
+      handleTouchEnd(){
+        this.touchStatus = false
       }
     },
     created(){
@@ -224,7 +265,7 @@
           
         })
         .catch(err => {
-//          console.log(err, 1);
+          console.log(err);
         })
       
       // 超时提示
@@ -239,20 +280,15 @@
       localStorage.curCity && (this.curCity = localStorage.curCity)
     },
     updated(){
+      // Better-Scroll滑动
       if(this.sideNavList.length && !this.curCity && !this.geoErr){
-        let bscroll = new BScroll(this.$refs.cities, {
+        this.startY = this.$refs['hot'][0].offsetTop
+        this.bscroll = new BScroll(this.$refs.cities, {
           bounce: {
             top: false
           },
           click: true
         })
-        let top = (this.docHeight - this.getStyle(this.$refs.sideNav, 'height').replace('px', '')) / 2
-        console.log(top);
-        this.$refs.sideNav.ontouchmove = (e) => {
-          e.preventDefault()
-          console.log(e)
-          // todo
-        }
       }
     },
     activated(){
@@ -260,7 +296,7 @@
         console.log('window scroll');
         let top = document.documentElement.scrollTop || document.body.scrollTop
         this.isFixed = !!top
-      }, 1)
+      }, 16)
     },
     beforeRouteLeave (to, from, next){
       this.filter && (this.filter = '')
@@ -388,17 +424,23 @@
           }
         }
       }
-      .side-nav{
+      .side-nav-wrapper{
         position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         right: 0;
-        top: 50%;
-        transform: translateY(-44%);
-        padding-right: .2rem;
-        .side-item{
-          padding: .05rem;
-          text-align: center;
+        top: 2.56rem;
+        bottom: 0;
+        .side-nav {
+          padding: 0 .2rem;
+          .side-item {
+            padding: .05rem;
+            text-align: center;
+          }
         }
       }
+      
     }
   }
   .too-long-enter, .too-too-long-enter, .too-long-leave-to, .too-too-long-leave-to {
@@ -406,13 +448,5 @@
   }
   .too-long-enter-to, .too-too-long-enter-to, .too-long-leave, .too-too-long-leave {
     opacity: 1
-  }
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to{
-      transform: rotate(360deg)
-    }
   }
 </style>

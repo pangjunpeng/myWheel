@@ -45,10 +45,10 @@
       transform: translateY(0) rotate(0deg);
     }
     50%{
-      transform: translate(-60%, -60%) rotate(90deg);
+      transform: translate(-60%, -60%) rotate(180deg);
     }
     100%{
-      transform: translateY(0) rotate(180deg);
+      transform: translateY(0) rotate(360deg);
     }
   }
 
@@ -57,10 +57,10 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translate(60%, 60%) rotate(90deg);
+      transform: translate(60%, 60%) rotate(180deg);
     }
     100% {
-      transform: translateY(0) rotate(180deg);
+      transform: translateY(0) rotate(360deg);
     }
   }
 
@@ -69,10 +69,10 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translate(-60%, 60%) rotate(90deg);
+      transform: translate(-60%, 60%) rotate(180deg);
     }
     100% {
-      transform: translateY(0) rotate(180deg);
+      transform: translateY(0) rotate(360deg);
     }
   }
 
@@ -81,10 +81,10 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translate(60%, -60%) rotate(90deg);
+      transform: translate(60%, -60%) rotate(180deg);
     }
     100% {
-      transform: translateY(0) rotate(180deg);
+      transform: translateY(0) rotate(360deg);
     }
   }
 </style>

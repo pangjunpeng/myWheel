@@ -2,22 +2,22 @@
   <div class="wrapper">
     <div class="container">
       <div class="list clearfix">
-        <div class="item" @click="switchMbSelect" v-hover="hoverClass">
+        <div class="item" :class="vHover" @click="switchMbSelect" v-hover="hoverClass">
           <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
-        <router-link class="item" to="/city" tag="div" v-hover="hoverClass">
+        <router-link class="item" :class="vHover" to="/city" tag="div" v-hover="hoverClass">
           <grid name="city-list" title="CityList" :desc="`城市选择组件<br>当前: <strong>${city}</strong>`"></grid>
         </router-link>
-        <router-link class="item" to="/msgBox" tag="div" v-hover="hoverClass">
+        <router-link class="item" :class="vHover" to="/msgBox" tag="div" v-hover="hoverClass">
           <grid name="msg" title="MsgBox" desc="消息提示"></grid>
         </router-link>
-        <div class="item" @click="switchAct" v-hover="hoverClass">
+        <div class="item" :class="vHover" @click="switchAct" v-hover="hoverClass">
           <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
-        <div class="item" @click="switchSelect" v-hover="hoverClass">
+        <div class="item" :class="vHover" @click="switchSelect" v-hover="hoverClass">
           <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc(下方展示)"></grid>
         </div>
-        <div class="item switch" v-hover="hoverClass">
+        <div class="item switch" :class="vHover" v-hover="hoverClass">
           <grid title="冒泡泡" desc="没事写的点击冒泡小插件">
             <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
           </grid>
@@ -140,7 +140,8 @@
           'bankId'    : '3081000',
           'acseq'     : 11594
         }],
-        popupData: [{
+        popupData: [
+          {
           text      : '阳春布德泽',
           cssClasses: 'content',
           handler   : function () {
@@ -197,18 +198,20 @@
       isPc(){
         return !navigator.userAgent.match('Mobile')
       },
+      vHover(){
+        if(this.isPc){
+          return 'v-hover-pc'
+        }else{
+          return 'v-hover-mb'
+        }
+      }
     },
     directives: {
       hover: {
         inserted(el, binding, vnode){
           let self = vnode.context
-          if(self.isPc){
-            if (el.className.indexOf('v-hover-enable') === -1) {
-              el.className += ' v-hover-enable '
-            }
-          }else{
+          if(!self.isPc){
             let hClass = binding.value
-
             el.ontouchstart = e => {
               el.addClass(hClass)
               setTimeout(function(){
@@ -394,13 +397,6 @@
     cursor: pointer;
     transition: all .2s;
   }
-  .v-hover-enable{
-    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
-    &:hover {
-      background-color: #fafafa;
-      box-shadow: 5px 5px 10px 1px rgba(219, 219, 219, 0.91);
-    }
-  }
   .switch {
     span {
       display: block;
@@ -453,7 +449,14 @@
   .mt{
     margin-top: .5rem;
   }
-  .v-hover-normal{
+  .v-hover-pc{
+    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
+    &:hover{
+      background-color: #fafafa;
+      box-shadow: 5px 5px 10px 1px rgba(219, 219, 219, 0.91);
+    }
+  }
+  .v-hover-mb{
     box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
   }
   .v-hover-hover{

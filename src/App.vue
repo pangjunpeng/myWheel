@@ -57,6 +57,7 @@ export default {
 <style scope type="text/less" lang="less">
   html{
     background-color: #f7f7f7;
+    user-select: none;
   }
   html, body, #app{
     height: 100%;
