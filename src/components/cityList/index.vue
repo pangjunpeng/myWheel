@@ -77,13 +77,14 @@
         <div v-show="!filter" class="side-nav-wrapper">
           <div class="side-nav">
             <div
-              v-for="item in sideNavList"
               class="side-item"
-              :data-target="item.value"
-              @click="handleLetterClick(item.value)"
+              :class="{'bold': index === curIndex}"
+              v-for="(item, index) in sideNavList"
+              :key="index"
+              @click="handleLetterClick(index)"
               @touchstart.prevent="handleTouchStart"
               @touchmove="handleTouchMove"
-              @touchend="handleTouchEnd"
+              @touchend="handleTouchEnd(index, $event)"
               :ref="item.value"
             >
               {{item.show}}
@@ -117,7 +118,8 @@
         sideNavList: [],
         letter: '',
         touchStatus: false,
-        startY: 0
+        startY: 0,
+        curIndex: 0
       }
     },
     computed: {
@@ -168,14 +170,18 @@
           return el.currentStyle[attr]
         }
       },
-      handleLetterClick(el){
+      handleLetterClick(index){
+        console.log('click');
         // 点击置顶
-        this.bscroll.scrollToElement(`#${el}`, 0)
+        this.letter = this.sideNavList[index]
       },
-      handleTouchStart(){
+      handleTouchStart(e){
+        console.log('touchstart');
         this.touchStatus = true
+        this.touchY = e.touches[0].clientY
       },
       handleTouchMove(e){
+        console.log('move');
         this.throttle(() => {
           if (this.touchStatus) {
             let touchY = e.touches[0].clientY - (this.rem * 2.56)
@@ -183,13 +189,22 @@
             let index = disY / (this.rem * 0.5) >> 0
             index < 0 && (index = 0)
             index > this.sideNavList.length - 1 && (index = this.sideNavList.length - 1)
-            this.bscroll.scrollToElement(`#${this.sideNavList[index].value}`, 0)
+            this.letter = this.sideNavList[index]
           }
         }, 16)(e)
-        
       },
-      handleTouchEnd(){
+      handleTouchEnd(index, e){
+        console.log('touchend');
         this.touchStatus = false
+        if(e.changedTouches[0].clientY === this.touchY){
+          this.letter = this.sideNavList[index]
+        }
+      }
+    },
+    watch: {
+      letter: function(newLetter){
+        this.curIndex = this.sideNavList.indexOf(newLetter)
+        this.bscroll.scrollToElement(`#${newLetter.value}`, 0)
       }
     },
     created(){
@@ -201,6 +216,7 @@
             this.cityList = res.data.data
           }
         }, err => {
+          console.log('接口挂掉了')
           console.log(err)
         })
         .then(() => {
@@ -265,7 +281,7 @@
           
         })
         .catch(err => {
-          console.log(err);
+          console.log(err)
         })
       
       // 超时提示
@@ -448,5 +464,8 @@
   }
   .too-long-enter-to, .too-too-long-enter-to, .too-long-leave, .too-too-long-leave {
     opacity: 1
+  }
+  .bold{
+    font-weight: 600;
   }
 </style>
