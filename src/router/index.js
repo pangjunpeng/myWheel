@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/index'
 import msgBox from '@/components/msgBox'
-import cityList from '@/components/cityList'
+import cityList from '@/components/cityList/cityList'
 
 Vue.use(Router)
 
