@@ -11,7 +11,7 @@
           <ul class="select-main" ref="slidePart">
             <li class="select-item" v-for="(item,index) in lists" :key="item.id">{{item.text}}</li>
           </ul>
-          <div class="white-shake" ref="slideEl" @click="alert"></div>
+          <div class="white-shake" ref="slideEl" @mouseup="alert"></div>
         </div>
       </div>
     </transition>
@@ -131,7 +131,7 @@
     }
     .select-content{
       height: 100%;
-      overflow: auto;
+      overflow: hidden;
       .select-main{
         text-align: center;
         transition: all .2s;

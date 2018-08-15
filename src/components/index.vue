@@ -300,14 +300,18 @@
       },
       getMsg(data){
         console.log(data)
+      },
+      getSelectData(){
+        this.$ajax.get('http://rap2api.taobao.org/app/mock/26292/selectPicker')
+          .then(res => {
+            console.log(res);
+            this.lists = res.data.data
+          })
       }
     },
     created(){
       // 获取select数据
-      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/selectPciker')
-        .then(res => {
-          this.lists = res.data
-        })
+      this.getSelectData()
       
       // 冒泡泡
       this.mouse = new MouseBubble()

@@ -32,7 +32,7 @@
     },
     computed: {
       msg(){
-        return this.inputMsg ? this.inputMsg : '请输入提示信息'
+        return this.inputMsg || '请输入提示信息'
       }
     },
     methods: {
@@ -64,15 +64,15 @@
         this.isShowToast = true
       }
     },
-    mounted(){
+    activated(){
       this.$refs.input.focus()
     },
   }
 </script>
 <style scoped type="text/less" lang="less">
   .container{
-    position: relative;
-    height: 100%;
+    top: 1.36rem;
+    bottom: 0;
     max-width: 520px;
     margin: 0 auto;
   }

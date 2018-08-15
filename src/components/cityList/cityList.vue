@@ -7,7 +7,7 @@
         正在获取数据
         <transition name="too-long">
           <div v-show="tooLong" class="long-tips">
-            本例使用easy-mock接口<br>可能不太稳定，请见谅
+            本例使用淘宝rap接口<br>可能不太稳定，请见谅
           </div>
         </transition>
         <transition name="too-too-long">
@@ -199,6 +199,93 @@
         if(e.changedTouches[0].clientY === this.touchY){
           this.letter = this.sideNavList[index]
         }
+      },
+      getCityList(){
+        this.$ajax.get('http://rap2api.taobao.org/app/mock/26292/cityList')
+          .then(res => {
+            if (res.status === 200 && res.data.ret) {
+              this.hasData = true
+              this.cityList = res.data.data
+            }
+          }, err => {
+            console.log('接口挂掉了')
+            console.log(err)
+          })
+          .then(() => {
+            // 整理侧边栏
+            let cityList = this.cityList.cities
+            if (this.cityList.hotCities && this.cityList.hotCities.length) {
+              this.sideNavList.push({
+                show : '★',
+                value: 'hot'
+              })
+            }
+            for (let i in cityList) {
+              this.sideNavList.push({
+                show : i,
+                value: i
+              })
+            }
+            // Better-Scroll滑动
+            // this.$nextTick() 当前异步操作updated后立即执行
+            this.$nextTick(() => {
+              this.startY = this.$refs['hot'][0].offsetTop
+              this.bscroll = new BScroll(this.$refs.cities, {
+                bounce: {
+                  top: false
+                },
+                click : true
+              })
+            })
+          })
+          .then(() => {
+            // 取到数据后获取位置
+            let vm = this
+            try {
+              const geo = new BMap.Geolocation()
+              geo.getCurrentPosition(function (res) {
+                // 用户拒绝了，并且不是电脑，才显示获取失败
+                if (res.accuracy === null && !navigator.platform.match('Win') && !navigator.platform.match('Mac')) {
+                  vm.geoErr = '获取位置失败'
+                  return false
+                }
+                const ERR = {
+                  0: '检索成功',
+                  1: '城市列表',
+                  2: '位置结果未知',
+                  3: '导航结果未知',
+                  4: '非法密钥',
+                  5: '非法请求',
+                  6: '您已拒绝',
+                  7: '服务不可用',
+                  8: '获取位置超时',
+                }
+                if (this.getStatus() === BMAP_STATUS_SUCCESS) {
+                  let cityList = vm.cityList.cities
+                  for (let i in cityList) {
+                    for (let j = 0; j < cityList[i].length; j++) {
+                      if (cityList[i][j].name.match(res.address.city.replace('市', ''))) {
+                        vm.curCity = cityList[i][j]
+                      }
+                    }
+                  }
+                } else {
+                  // 应该不可能走到这来
+                  if (this.getStatus() === BMAP_STATUS_TIMEOUT) {
+                    vm.geoErr = ERR[this.getStatus()]
+                  } else {
+                    vm.geoErr = '获取位置失败'
+                  }
+                }
+              })
+            } catch (err) {
+              this.geoErr = '获取位置失败'
+            }
+      
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     },
     watch: {
@@ -209,104 +296,24 @@
     },
     created(){
       // 获取数据
-      this.$ajax.get('https://easy-mock.com/mock/5afc27eb3379770340408b48/example/city#!method=get')
-        .then(res => {
-          if(res.status === 200 && res.data.ret){
-            this.hasData = true
-            this.cityList = res.data.data
-          }
-        }, err => {
-          console.log('接口挂掉了')
-          console.log(err)
-        })
-        .then(() => {
-          // 整理侧边栏
-          let cityList = this.cityList.cities
-          if (this.cityList.hotCities && this.cityList.hotCities.length) {
-            this.sideNavList.push({
-              show : '★',
-              value: 'hot'
-            })
-          }
-          for (let i in cityList) {
-            this.sideNavList.push({
-              show : i,
-              value: i
-            })
-          }
-        })
-        .then(() => {
-          // 取到数据后获取位置
-          let vm = this
-          try{
-            const geo = new BMap.Geolocation()
-            geo.getCurrentPosition(function (res) {
-              // 用户拒绝了，并且不是电脑，才显示获取失败
-              if (res.accuracy === null && !navigator.platform.match('Win') && !navigator.platform.match('Mac')) {
-                vm.geoErr = '获取位置失败'
-                return false
-              }
-              const ERR = {
-                0: '检索成功',
-                1: '城市列表',
-                2: '位置结果未知',
-                3: '导航结果未知',
-                4: '非法密钥',
-                5: '非法请求',
-                6: '您已拒绝',
-                7: '服务不可用',
-                8: '获取位置超时',
-              }
-              if (this.getStatus() === BMAP_STATUS_SUCCESS) {
-                let cityList = vm.cityList.cities
-                for (let i in cityList) {
-                  for (let j = 0; j < cityList[i].length; j++) {
-                    if (cityList[i][j].name.match(res.address.city.replace('市', ''))) {
-                      vm.curCity = cityList[i][j]
-                    }
-                  }
-                }
-              } else {
-                // 应该不可能走到这来
-                if (this.getStatus() === BMAP_STATUS_TIMEOUT) {
-                  vm.geoErr = ERR[this.getStatus()]
-                } else {
-                  vm.geoErr = '获取位置失败'
-                }
-              }
-            })
-          }catch(err){
-            this.geoErr = '获取位置失败'
-          }
-          
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.getCityList()
       
-      // 超时提示
-      setTimeout(() => {
-        this.tooLong = true
-      }, 5000)
-      setTimeout(() => {
-        this.tooTooLong = true
-      }, 15000)
     },
     mounted(){
       localStorage.curCity && (this.curCity = localStorage.curCity)
+      // 超时提示
+      setTimeout(() => {
+        !this.cityList.length && (this.tooLong = true)
+      }, 5000)
+      setTimeout(() => {
+        !this.cityList.length && (this.tooTooLong = true)
+      }, 15000)
     },
-    updated(){
-      // Better-Scroll滑动
-      if(this.sideNavList.length && !this.curCity && !this.geoErr){
-        this.startY = this.$refs['hot'][0].offsetTop
-        this.bscroll = new BScroll(this.$refs.cities, {
-          bounce: {
-            top: false
-          },
-          click: true
-        })
-      }
-    },
+//    updated(){
+//      if(this.sideNavList.length && !this.curCity && !this.geoErr){
+//
+//      }
+//    },
     activated(){
       window.onscroll = this.throttle(() => {
         console.log('window scroll');
