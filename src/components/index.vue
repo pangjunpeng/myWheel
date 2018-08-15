@@ -15,7 +15,7 @@
           <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
         <div class="item" :class="vHover" @click="switchSelect" v-hover="hoverClass">
-          <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc(下方展示)"></grid>
+          <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc(下方结果)"></grid>
         </div>
         <div class="item switch" :class="vHover" v-hover="hoverClass">
           <grid title="冒泡泡" desc="没事写的点击冒泡小插件">
@@ -48,7 +48,6 @@
           :type="msgType"
           :isShow.sync="alertShow"
           :msg="msg"
-          @result="getMsg"
         ></msg-box>
         <popup
           :isShow.sync="isShowPopup"
@@ -118,24 +117,24 @@
           {
           'branchId'  : '48484848448',
           'bankName'  : '招商银行',
-          'acNo'      : '6225768639338661',
-          'phoneNo'   : '15811251758',
+          'acNo'      : '1111111111111111',
+          'phoneNo'   : '11111111111',
           'bankactype': 'PEBC',
           'bankId'    : '3081000',
           'acseq'     : 11594
         }, {
           'branchId'  : '308100005133',
           'bankName'  : '建设银行',
-          'acNo'      : '6225768639338662',
-          'phoneNo'   : '15811251758',
+          'acNo'      : '2222222222222222',
+          'phoneNo'   : '22222222222',
           'bankactype': 'PEBC',
           'bankId'    : '3081000',
           'acseq'     : 11594
         }, {
           'branchId'  : '105100001036',
           'bankName'  : '工商银行',
-          'acNo'      : '6225768639338663',
-          'phoneNo'   : '15811251758',
+          'acNo'      : '3333333333333333',
+          'phoneNo'   : '33333333333',
           'bankactype': 'PEBC',
           'bankId'    : '3081000',
           'acseq'     : 11594
@@ -266,6 +265,7 @@
         this.s2Data = data
         this.result = this.s2Data
         this.resFlag = true
+        this.toast('结果在下方表格展示')
       },
       openBubble(){
         this.mouse.add()
@@ -298,13 +298,9 @@
         this.msg = msg
         this.alertShow = true
       },
-      getMsg(data){
-        console.log(data)
-      },
       getSelectData(){
         this.$ajax.get('http://rap2api.taobao.org/app/mock/26292/selectPicker')
           .then(res => {
-            console.log(res);
             this.lists = res.data.data
           })
       }
