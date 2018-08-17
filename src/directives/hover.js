@@ -25,8 +25,11 @@ export default (Vue) => {
   Vue.directive('hover', {
     inserted(el, binding, vnode){
       let self = vnode.context
-      console.log(binding.value);
-      if (!self.isPc) {
+      if (self.isPc) {
+        let hClass = binding.value.pc
+        console.log(hClass);
+        el.addClass(hClass)
+      }else{
         let hClass = binding.value.mb
         el.ontouchstart = e => {
           el.addClass(hClass)
@@ -34,14 +37,12 @@ export default (Vue) => {
             el.removeClass(hClass)
           }, 1000)
         }
+        let time = binding.value.time || 100
         el.ontouchend = () => {
           setTimeout(function () {
             el.removeClass(hClass)
-          }, 200)
+          }, time)
         }
-      }else{
-        let hClass = binding.value.pc
-        el.addClass(hClass)
       }
     }
   })

@@ -114,7 +114,7 @@
         showPopTime: 0,
         hoverClass: {
           pc: 'v-hover',
-          mb: 'v-hover-mb'
+          mb: 'v-hover-mb',
         },
         bankLists: [
           {
@@ -196,9 +196,6 @@
           i.logo = require('./vue-select/img/' + i.branchId + '.png')
         }
         return this.bankLists
-      },
-      isPc(){
-        return !navigator.userAgent.match('Mobile')
       },
     },
     methods: {
@@ -291,6 +288,7 @@
       localStorage.city && (this.city = JSON.parse(localStorage.city).name)
     },
     mounted(){
+      console.log(this.isPc);
       if(this.isPc){
         this.toast('手机访问效果更佳哦~')
         console.log('欢迎欢迎~')

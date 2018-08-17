@@ -144,18 +144,6 @@
       }
     },
     methods: {
-      throttle(fn, time){
-        let flag = false
-        return function(...args){
-          if(!flag){
-            fn.apply(null, args)
-            flag = true
-            setTimeout(() => {
-              flag = false
-            }, time)
-          }
-        }
-      },
       pickCity(city){
         Bus.$emit('changeCity', city)
         this.$router.back()
@@ -309,17 +297,12 @@
         !this.cityList.length && (this.tooTooLong = true)
       }, 15000)
     },
-//    updated(){
-//      if(this.sideNavList.length && !this.curCity && !this.geoErr){
-//
-//      }
-//    },
     activated(){
       window.onscroll = this.throttle(() => {
         console.log('window scroll');
         let top = document.documentElement.scrollTop || document.body.scrollTop
         this.isFixed = !!top
-      }, 16)
+      }, 1000)
     },
     beforeRouteLeave (to, from, next){
       this.filter && (this.filter = '')
