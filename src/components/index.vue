@@ -2,22 +2,22 @@
   <div class="wrapper">
     <div class="container">
       <div class="list clearfix">
-        <div class="item" :class="vHover" @click="switchMbSelect" v-hover="hoverClass">
+        <div class="item" @click="switchMbSelect" v-hover="hoverClass">
           <grid name="mb-select" title="SelectPicker" desc="移动端select效果"></grid>
         </div>
-        <router-link class="item" :class="vHover" to="/city" tag="div" v-hover="hoverClass">
+        <router-link class="item" to="/city" tag="div" v-hover="hoverClass">
           <grid name="city-list" title="CityList" :desc="`城市选择组件<br>当前: <strong>${city}</strong>`"></grid>
         </router-link>
-        <router-link class="item" :class="vHover" to="/msgBox" tag="div" v-hover="hoverClass">
+        <router-link class="item" to="/msgBox" tag="div" v-hover="hoverClass">
           <grid name="msg" title="MsgBox" desc="消息提示"></grid>
         </router-link>
-        <div class="item" :class="vHover" @click="switchAct" v-hover="hoverClass">
+        <div class="item" @click="switchAct" v-hover="hoverClass">
           <grid name="actionsheet" title="actionsheet" desc="一个弹出选择器"></grid>
         </div>
-        <div class="item" :class="vHover" @click="switchSelect" v-hover="hoverClass">
+        <div class="item" @click="switchSelect" v-hover="hoverClass">
           <grid name="select" title="selector" desc="可以带图片的selector<br>适配移动和pc(下方结果)"></grid>
         </div>
-        <div class="item switch" :class="vHover" v-hover="hoverClass">
+        <div class="item switch" v-hover="hoverClass">
           <grid title="冒泡泡" desc="没事写的点击冒泡小插件">
             <span :class="{'close': !isShowBubble}" @click="switchBubble"><i></i></span>
           </grid>
@@ -112,7 +112,10 @@
         msg: '说点什么呢',
         popMsg: '',
         showPopTime: 0,
-        hoverClass: 'v-hover-hover',
+        hoverClass: {
+          pc: 'v-hover',
+          mb: 'v-hover-mb'
+        },
         bankLists: [
           {
           'branchId'  : '48484848448',
@@ -197,34 +200,6 @@
       isPc(){
         return !navigator.userAgent.match('Mobile')
       },
-      vHover(){
-        if(this.isPc){
-          return 'v-hover-pc'
-        }else{
-          return 'v-hover-mb'
-        }
-      }
-    },
-    directives: {
-      hover: {
-        inserted(el, binding, vnode){
-          let self = vnode.context
-          if(!self.isPc){
-            let hClass = binding.value
-            el.ontouchstart = e => {
-              el.addClass(hClass)
-              setTimeout(function(){
-                el.removeClass(hClass)
-              }, 1000)
-            }
-            el.ontouchend = () => {
-              setTimeout(function () {
-                el.removeClass(hClass)
-              }, 200)
-            }
-          }
-        }
-      }
     },
     methods: {
       switchBubble(){
@@ -312,22 +287,6 @@
       // 冒泡泡
       this.mouse = new MouseBubble()
       
-      // 挂载共用方法到dom
-      HTMLElement.prototype.addClass = function(cName){
-        let aCName = cName.split(' ').filter(item => {
-          return item
-        })
-        aCName.forEach(item => {
-          if(this.className.indexOf(item) === -1){
-            this.className += ` ${item} `
-          }
-        })
-      }
-      HTMLElement.prototype.removeClass = function(cName){
-        let reg = new RegExp('\\b' + cName + '\\b ', 'g')
-        this.className = this.className.replace(reg, '')
-      }
-      
       // 获取城市
       localStorage.city && (this.city = JSON.parse(localStorage.city).name)
     },
@@ -380,10 +339,6 @@
   }
 
   .item {
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     position: relative;
     float: left;
     width: 4rem;
@@ -396,6 +351,7 @@
     background-color: #fff;
     cursor: pointer;
     transition: all .2s;
+    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
   }
   .switch {
     span {
@@ -449,17 +405,13 @@
   .mt{
     margin-top: .5rem;
   }
-  .v-hover-pc{
-    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
+  .v-hover{
     &:hover{
       background-color: #fafafa;
       box-shadow: 5px 5px 10px 1px rgba(219, 219, 219, 0.91);
     }
   }
   .v-hover-mb{
-    box-shadow: 1px 1px 10px 1px rgba(219, 219, 219, 0.91);
-  }
-  .v-hover-hover{
     background-color: #fafafa;
     box-shadow: 5px 5px 10px 1px rgba(219, 219, 219, 0.91);
   }
