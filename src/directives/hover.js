@@ -27,7 +27,6 @@ export default (Vue) => {
       let self = vnode.context
       if (self.isPc) {
         let hClass = binding.value.pc
-        console.log(hClass);
         el.addClass(hClass)
       }else{
         let hClass = binding.value.mb

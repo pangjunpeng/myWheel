@@ -59,18 +59,20 @@
     created(){
       // 挂载共用方法到dom
       HTMLElement.prototype.addClass = function (cName) {
-        let aCName = cName.split(' ').filter(item => {
-          return item
-        })
-        aCName.forEach(item => {
-          if (this.className.indexOf(item) === -1) {
-            this.className += ` ${item} `
-          }
-        })
+        this.classList.add(cName)
+//        let aCName = cName.split(' ').filter(item => {
+//          return item
+//        })
+//        aCName.forEach(item => {
+//          if (this.className.indexOf(item) === -1) {
+//            this.className += ` ${item} `
+//          }
+//        })
       }
       HTMLElement.prototype.removeClass = function (cName) {
-        let reg = new RegExp('\\b' + cName + '\\b ', 'g')
-        this.className = this.className.replace(reg, '')
+        this.className.remove(cName)
+//        let reg = new RegExp('\\b' + cName + '\\b ', 'g')
+//        this.className = this.className.replace(reg, '')
       }
     },
     watch   : {
