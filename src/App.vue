@@ -70,7 +70,7 @@
 //        })
       }
       HTMLElement.prototype.removeClass = function (cName) {
-        this.className.remove(cName)
+        this.classList.remove(cName)
 //        let reg = new RegExp('\\b' + cName + '\\b ', 'g')
 //        this.className = this.className.replace(reg, '')
       }

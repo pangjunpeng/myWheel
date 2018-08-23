@@ -164,12 +164,10 @@
         this.letter = this.sideNavList[index]
       },
       handleTouchStart(e){
-        console.log('touchstart');
         this.touchStatus = true
         this.touchY = e.touches[0].clientY
       },
       handleTouchMove(e){
-        console.log('move');
         this.throttle(() => {
           if (this.touchStatus) {
             let touchY = e.touches[0].clientY - (this.rem * 2.56)
@@ -182,7 +180,6 @@
         }, 16)(e)
       },
       handleTouchEnd(index, e){
-        console.log('touchend');
         this.touchStatus = false
         if(e.changedTouches[0].clientY === this.touchY){
           this.letter = this.sideNavList[index]

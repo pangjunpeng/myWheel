@@ -288,7 +288,6 @@
       localStorage.city && (this.city = JSON.parse(localStorage.city).name)
     },
     mounted(){
-      console.log(this.isPc);
       if(this.isPc){
         this.toast('手机访问效果更佳哦~')
         console.log('欢迎欢迎~')
@@ -345,7 +344,7 @@
     padding-top: 1rem;
     text-align: center;
     border: 1px solid @borderColor;
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: #fff;
     cursor: pointer;
     transition: all .2s;
