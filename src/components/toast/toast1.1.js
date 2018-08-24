@@ -1,8 +1,8 @@
 function Toast(params) {
   var options = {}
-  if(typeof params === 'string'){
+  if (typeof params === 'string') {
     options.msg = params
-  }else{
+  } else {
     option = params
   }
   this.msg = options.msg || '请输入内容'
@@ -13,7 +13,6 @@ function Toast(params) {
     this.stay = 1000
   }
   this.timer1 = null
-  this.timer2 = null
   this.show.call(this)
 }
 Toast.prototype.getStyle = function (attr) {
@@ -28,18 +27,29 @@ Toast.prototype.getStyle = function (attr) {
 }
 Toast.prototype.addEl = function () {
   this.el = document.createElement('span')
-  this.el.id = 'pangToast'
+  this.el.className = 'pangToast'
+  this.el.stopTimer1 = false
   document.body.appendChild(this.el)
   this.style = document.createElement('style')
-  this.style.id = 'pangToastStyle'
-  this.style.innerText = '#pangToast{display:none;max-width: 20%;padding: 5px 10px;border-radius: 10px;position: fixed;bottom:-50px;left: 50%;transform: translateX(-50%);font-size: 12px;color: #fff;background-color: #333;}'
+  this.style.className = 'pangToastStyle'
+  this.style.innerText = '.pangToast{display:none;max-width: 20%;padding: 5px 10px;border-radius: 10px;position: fixed;bottom:-50px;left: 50%;transform: translateX(-50%);font-size: 12px;color: #fff;background-color: #333;}'
   document.body.appendChild(this.style)
 }
+Toast.prototype.removeLast = function () {
+  var toastEls = document.getElementsByClassName('pangToast'),
+    toastStyle = document.getElementsByClassName('pangToastStyle')
+  if (toastEls.length) {
+    var el = toastEls[toastEls.length - 1],
+      style = toastStyle[toastStyle.length - 1]
+    el.stopTimer1 = true
+    this.fadeOut(el, function () {
+      this.remove(el, style)
+    })
+  }
+}
 Toast.prototype.remove = function () {
-  var el = document.getElementById('pangToast'), style = document.getElementById('pangToastStyle')
-  if (el && style) {
-    document.body.removeChild(el)
-    document.body.removeChild(style)
+  for (var i = 0; i < arguments.length; i++) {
+    document.body.removeChild(arguments[i])
   }
 }
 Toast.prototype.run = function () {
@@ -49,9 +59,24 @@ Toast.prototype.run = function () {
   this.height = this.getStyle('height')
   var nHeight = +this.height.replace('px', '')
   this.timer1 = setInterval(function () {
+    Object.defineProperty(self.el, 'stopTimer1', {
+      get(){
+        return self.el.stopTimer1
+      },
+      set(value){
+        if (value) {
+          clearInterval(self.timer1)
+        }
+      }
+    })
     if (~nHeight > (self.distance || 50)) {
       clearInterval(self.timer1)
-      self.fadeOut()
+      setTimeout(function () {
+        self.fadeOut(self.el, function () {
+          self.remove(self.el, self.style)
+        })
+      }, self.stay)
+      
     } else {
       var curBottom = ~nHeight + 'px'
       self.el.style.bottom = curBottom
@@ -59,24 +84,21 @@ Toast.prototype.run = function () {
     }
   }, 100 / this.speed)
 }
-Toast.prototype.fadeOut = function (fn) {
+Toast.prototype.fadeOut = function (el, fn) {
   var self = this
-  setTimeout(function () {
-    var opacity = self.el.style.opacity || 1
-    self.timer2 = setInterval(function () {
-      if (opacity <= 0) {
-        clearInterval(self.timer2)
-        fn && fn()
-        self.remove()
-      } else {
-        self.el.style.opacity = opacity
-        opacity -= 0.01
-      }
-    }, 16)
-  }, this.stay)
+  var opacity = el.style.opacity || 1
+  this.timer2 = setInterval(function () {
+    if (opacity <= 0) {
+      clearInterval(self.timer2)
+      fn && fn.call(self)
+    } else {
+      el.style.opacity = opacity
+      opacity -= 0.01
+    }
+  }, 16)
 }
 Toast.prototype.show = function () {
-  this.remove()
+  this.removeLast()
   this.addEl()
   this.run()
 }
