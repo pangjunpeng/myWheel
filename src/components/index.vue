@@ -71,10 +71,10 @@
 </template>
 <script>
   import MouseBubble from './mouse-click-bubble/'
-  import Actionsheet from './vue-actionsheet/actionsheet'
+  import Actionsheet from './actionsheet/actionsheet'
   import VConsole from './my_vConsole/lib/vconsole.min'
   import mySelect from './SelectPicker/Select'
-  import Select from './vue-select/Select'
+  import Select from './selectPopup/Select'
   import msgBox from './msgBox/msgBox'
   import toast from './toast/toast'
   import popup from './popup/popup'
@@ -193,7 +193,7 @@
     computed: {
       selectData() {
         for (let i of this.bankLists) {
-          i.logo = require('./vue-select/img/' + i.branchId + '.png')
+          i.logo = require('./selectPopup/img/' + i.branchId + '.png')
         }
         return this.bankLists
       },
