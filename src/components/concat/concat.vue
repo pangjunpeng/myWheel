@@ -40,6 +40,11 @@
           value: 'blog',
           icon: 'blog'
         }, {
+          title: 'resume',
+          href : 'https://pangjunpeng.com/resume/',
+          value: 'resume',
+          icon: 'resume'
+        }, {
           title: 'tips',
           href: 'https://github.com/pangjunpeng/myWheels/issues',
           value: '欢迎提bug'
