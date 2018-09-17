@@ -186,7 +186,7 @@
         }
       },
       getCityList(){
-        this.$ajax.get('http://rap2api.taobao.org/app/mock/26292/cityList')
+        this.$ajax.get('//rap2api.taobao.org/app/mock/26292/cityList')
           .then(res => {
             if (res.status === 200 && res.data.ret) {
               this.hasData = true

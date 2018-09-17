@@ -271,7 +271,7 @@
         this.alertShow = true
       },
       getSelectData(){
-        this.$ajax.get('http://rap2api.taobao.org/app/mock/26292/selectPicker')
+        this.$ajax.get('//rap2api.taobao.org/app/mock/26292/selectPicker')
           .then(res => {
             this.lists = res.data.data
           })
