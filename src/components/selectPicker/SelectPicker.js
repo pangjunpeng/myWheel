@@ -8,7 +8,6 @@ function SelectPicker (params, fn) {
   this.target = params.target
   this.initIndex = params.index
   this.init()
-  this.scrollTo(this.initIndex || 'top')
   fn && fn(this.itemIndex)
 }
 SelectPicker.prototype = {
@@ -18,14 +17,13 @@ SelectPicker.prototype = {
     this.tItemHeight = this.getAttr(this.target.firstChild, 'height')
     this.initTop = (this.elHeight - this.tItemHeight) / 2
     this.initBottom = -this.targetHeight + (this.elHeight + this.tItemHeight) / 2
+    this.scrollTo(this.initIndex || 'top')
   },
-  scrollTrigger: function (params={}, fn) {
-    let self = this   // 保存this
-    self.el.preDisX = self.el.preDisY = self.el.disX = self.el.disY = 0 // 初始化
-    let {scrollX = true, scrollY = true} = params    // 获取参数
+  scrollTrigger: function (params, fn) {
+    this.el.preDisX = this.el.preDisY = this.el.disX = this.el.disY = 0 // 初始化
     
     // 获取默认位置
-    let style = self.getStyle(self.target, 'transform')
+    let style = this.getStyle(this.target, 'transform')
     if (style !== 'none') {
       let translate = ''
       if(style.match('translate')){
@@ -33,17 +31,22 @@ SelectPicker.prototype = {
       }else if(style.match('matrix')){
         translate = style.match(/matrix\(1, 0, 0, 1, (.*), (.*)\)/)
       }
-      self.el.preDisX = +translate[1]
-      self.el.preDisY = +translate[2]
+      this.el.preDisX = +translate[1]
+      this.el.preDisY = +translate[2]
     }
+    this.bindEvents(params, fn)
     
+  },
+  bindEvents: function(params, fn){
+    let {scrollX = true, scrollY = true} = params    // 获取参数
+    let self = this
     // 操作
-    self.el.ontouchstart = function (e) {
+    this.el.ontouchstart = function (e) {
       e.preventDefault()
       scrollX && (this.startX = e.changedTouches[0].clientX)
       scrollY && (this.startY = e.changedTouches[0].clientY)
     }
-    self.el.ontouchmove = function (e) {
+    this.el.ontouchmove = function (e) {
       e.preventDefault()
       if (scrollX) {
         this.currentClientX = e.changedTouches[0].clientX
@@ -52,15 +55,15 @@ SelectPicker.prototype = {
       if (scrollY) {
         this.currentClientY = e.changedTouches[0].clientY
         this.disY = this.currentClientY - this.startY + this.preDisY
-        if(this.disY > (self.initTop + self.tItemHeight / 2)){
+        if (this.disY > (self.initTop + self.tItemHeight / 2)) {
           this.disY = self.initTop + self.tItemHeight / 2
         }
-        if(this.disY < (self.initBottom - self.tItemHeight / 2)){
+        if (this.disY < (self.initBottom - self.tItemHeight / 2)) {
           this.disY = (self.initBottom - self.tItemHeight / 2)
         }
         self.itemIndex = Math.round((self.initTop - this.disY) / self.tItemHeight);
         (self.initTop - this.disY) / self.tItemHeight < 0 ? (self.itemIndex = -1) : 1
-        self.target.childNodes.forEach(function(item){
+        self.target.childNodes.forEach(function (item) {
           item.style.fontWeight = ''
         })
         let weightNode = self.target.childNodes[self.itemIndex]
@@ -68,19 +71,19 @@ SelectPicker.prototype = {
       }
       self.target.style.transform = `translate3d(${this.disX}px, ${this.disY}px, 0px)`
     }
-    self.el.ontouchend = function (e) {
+    this.el.ontouchend = function (e) {
       e.preventDefault()
-      if(self.itemIndex < 0){
+      if (self.itemIndex < 0) {
         self.itemIndex = 0
       }
-      if(self.itemIndex >= self.target.childNodes.length){
+      if (self.itemIndex >= self.target.childNodes.length) {
         self.itemIndex = self.target.childNodes.length - 1
       }
       var res = {}
-      if(scrollX){
+      if (scrollX) {
         res.translateX = this.preDisX = this.disX
       }
-      if(scrollY) {
+      if (scrollY) {
         res.translateY = this.preDisY = this.disY
         res.index = self.itemIndex
         self.scrollTo(self.initTop - self.itemIndex * self.tItemHeight + 'px')
